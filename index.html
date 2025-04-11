@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Barber System</title>
+      <link rel="stylesheet" href="styles.css">
+   </head>
+   <body>
+      <nav class="nav">
+         <div class="logo">Barber System</div>
+         <div class="nav-links">
+            <a id="btn-services" class="nav-btn selected" data-type="services">Serviços</a>
+            <a id="btn-customers" class="nav-btn" data-type="customers">Clientes</a>
+            <a id="btn-employees" class="nav-btn" data-type="employees">Funcionários</a>
+            <a id="btn-appointments" class="nav-btn" data-type="appointments">Agendamentos</a>
+         </div>
+      </nav>
+      <section class="container">
+         <div id="table-wrapper">
+            <table>
+               <thead>
+                  <tr id="table-header">
+                  </tr>
+               </thead>
+               <tbody id="table-body">
+               </tbody>
+            </table>
+         </div>
+         <div id="no-data-message"></div>
+      </section>
+      <script src="script.js"></script>
+   </body>
+</html>
