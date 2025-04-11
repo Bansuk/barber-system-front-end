@@ -27,11 +27,21 @@ const fieldsByType = {
   ],
   customers: [
     { label: 'Nome', name: 'name', placeholder: 'Fulano de Tal' },
-    { label: 'Email', name: 'email', type: 'email', placeholder: 'fulanodetal@test.com' },
+    {
+      label: 'Email',
+      name: 'email',
+      type: 'email',
+      placeholder: 'fulanodetal@test.com',
+    },
   ],
   employees: [
     { label: 'Nome', name: 'name', placeholder: 'Ciclano de Tal' },
-    { label: 'Email', name: 'email', type: 'email', placeholder: 'ciclanodetal@test.com' },
+    {
+      label: 'Email',
+      name: 'email',
+      type: 'email',
+      placeholder: 'ciclanodetal@test.com',
+    },
   ],
   appointments: [
     { label: 'Cliente', name: 'customer' },
@@ -40,68 +50,92 @@ const fieldsByType = {
   ],
 };
 
+const createTableCell = (content) => {
+  const cell = document.createElement('td');
+  cell.textContent = formatField({ field: content }) || '-';
+  return cell;
+};
+
+const createHeaderCell = (headerText) => {
+  const th = document.createElement('th');
+  th.textContent = headerText;
+  return th;
+};
+
+const clearElement = (element) => {
+  if (element) {
+    element.innerHTML = '';
+  }
+};
+
 const updateTableHeaders = ({ columns }) => {
   const headerRow = document.getElementById('table-header');
+  if (!headerRow) return;
 
-  headerRow.innerHTML = '';
+  clearElement(headerRow);
 
+  const fragment = document.createDocumentFragment();
   columns.forEach((column) => {
-    const th = document.createElement('th');
-    th.textContent = column;
-    headerRow.appendChild(th);
+    fragment.appendChild(createHeaderCell(column));
   });
+
+  headerRow.appendChild(fragment);
 };
 
 const insertList = ({ data, columns }) => {
   const tableBody = document.getElementById('table-body');
-  tableBody.innerHTML = '';
+  if (!tableBody) return;
+
+  clearElement(tableBody);
+
+  const fragment = document.createDocumentFragment();
 
   data.forEach((item) => {
     const row = document.createElement('tr');
 
     columns.forEach((column) => {
-      const cell = document.createElement('td');
-      cell.textContent = formatField({ field: item[column] }) || '-';
-      row.appendChild(cell);
+      row.appendChild(createTableCell(item[column]));
     });
 
-    tableBody.appendChild(row);
+    fragment.appendChild(row);
   });
+
+  tableBody.appendChild(fragment);
 };
 
-const updateList = async ({ type }) => {
-  const data = await getList({ type });
-  const { headerRow, tableBody } = getTableElements();
+const toggleTableVisibility = (showTable, type = null) => {
+  const { tableContainer, noDataMessage } = getTableStructure();
 
-  if (!headerRow || !tableBody) return;
+  if (!tableContainer || !noDataMessage) return;
 
-  headerRow.innerHTML = '';
-  tableBody.innerHTML = '';
+  tableContainer.style.display = showTable ? 'block' : 'none';
+  noDataMessage.style.display = showTable ? 'none' : 'block';
 
-  updateTable({ type, data });
+  if (!showTable && type) {
+    noDataMessage.textContent = `Ainda não existem ${translateOptions.get(type)} cadastrados.`;
+  }
 };
 
 const updateTable = ({ type, data }) => {
-  if (data.length === 0) displayNoDataMessage({ type });
-  else displayTable();
+  if (!type || !types[type]) return;
 
-  updateTableHeaders({ columns: types[type].headers });
-  insertList({ data, columns: types[type].fields });
+  const hasData = Array.isArray(data) && data.length > 0;
+  toggleTableVisibility(hasData, type);
+
+  if (hasData) {
+    updateTableHeaders({ columns: types[type].headers });
+    insertList({ data, columns: types[type].fields });
+  }
 };
 
-const displayTable = () => {
-  const { tableContainer, noDataMessage } = getTableStructure();
-
-  tableContainer.style.display = 'block';
-  noDataMessage.style.display = 'none';
-};
-
-const displayNoDataMessage = ({ type }) => {
-  const { tableContainer, noDataMessage } = getTableStructure();
-
-  tableContainer.style.display = 'none';
-  noDataMessage.style.display = 'block';
-  noDataMessage.innerHTML = `Ainda não existem ${translateOptions.get(type)} cadastrados.`;
+const updateList = async ({ type }) => {
+  try {
+    const data = await getList({ type });
+    updateTable({ type, data });
+  } catch (error) {
+    console.error('Failed to update list:', error);
+    toggleTableVisibility(false, type);
+  }
 };
 
 /*
@@ -127,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => updateList({ type }));
 const modalOverlay = document.getElementById('modalOverlay');
 
 const openModal = () => {
-  generateForm({type});
+  generateForm({ type });
   modalOverlay.style.display = 'flex';
 };
 
@@ -136,43 +170,105 @@ const closeModal = () => {
 };
 
 const updateButtonText = (text) => {
-  document.querySelector(".open-modal-btn").textContent = text;
-}
+  document.querySelector('.open-modal-btn').textContent = text;
+};
 
-const generateForm = ({type}) => {
+const generateForm = ({ type }) => {
   const dynamicForm = document.getElementById('dynamic-form');
+  const modalTitle = document.getElementById('modal-title');
   const translatedType = translateOptions.get(type);
 
-  document.getElementById('modal-title').textContent =
-    `Novo ${translatedType.charAt(0).toUpperCase() + translatedType.slice(1, translatedType.length - 1)}`;
   dynamicForm.innerHTML = '';
+  modalTitle.textContent = `Novo ${formatTypeForTitle(translatedType)}`;
 
   fieldsByType[type].forEach((field) => {
-    const inputGroup = document.createElement('div');
-    inputGroup.innerHTML = `
-      <label>${field.label}</label>
-      <input type='${field.type || 'text'}' name='${field.name}' placeholder='${field.placeholder}' required />
-    `;
-    dynamicForm.appendChild(inputGroup);
+    dynamicForm.appendChild(createInputGroup({ field }));
   });
 
+  dynamicForm.appendChild(createSubmitButton());
+  dynamicForm.appendChild(createErrorContainer());
+
+  dynamicForm.onsubmit = handleFormSubmit({ type });
+};
+
+const handleFormSubmit =
+  ({ type }) =>
+  async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const errorContainer = document.getElementById('error-container');
+    const formData = Object.fromEntries(new FormData(form));
+    const processedData = processFormData(formData);
+
+    errorContainer.style.display = 'none';
+    errorContainer.innerHTML = '';
+
+    try {
+      await postData({ type, body: processedData });
+      modalOverlay.style.display = 'none';
+      updateList({ type });
+    } catch (error) {
+      displayErrors({ errorContainer, error });
+    }
+  };
+
+const displayErrors = ({ errorContainer, error }) => {
+  errorContainer.style.display = 'block';
+
+  try {
+    const errorData = JSON.parse(error.message);
+
+    if (typeof errorData.json === 'object' && errorData.json !== null) {
+      Object.entries(errorData.json).forEach(([field, msgArray]) => {
+        if (Array.isArray(msgArray)) {
+          msgArray.forEach((msg) => {
+            const errorMsg = document.createElement('p');
+            errorMsg.textContent = `${field}: ${msg}`;
+            errorContainer.appendChild(errorMsg);
+          });
+        }
+      });
+    }
+  } catch (parseError) {
+    errorContainer.textContent = error.message;
+  }
+};
+
+const createErrorContainer = () => {
+  const errorMessage = document.createElement('div');
+  errorMessage.id = 'error-container';
+  errorMessage.className = 'error-container';
+  errorMessage.style.display = 'none';
+  return errorMessage;
+};
+
+const createSubmitButton = () => {
   const submitButton = document.createElement('button');
   submitButton.type = 'submit';
   submitButton.id = 'submit-btn';
   submitButton.textContent = 'Enviar';
-  dynamicForm.appendChild(submitButton);
+  return submitButton;
+};
 
-  dynamicForm.onsubmit = async (e) => {
-    const form = e.target;
+const createInputGroup = ({ field }) => {
+  const inputGroup = document.createElement('div');
+  inputGroup.classList.add('input-group');
 
-    e.preventDefault();
-    const formData = Object.fromEntries(new FormData(form));
-    if (formData.price) formData.price = parseInt(formData.price, 10);
-    await postData({ type, body: formData });
-    modalOverlay.style.display = 'none';
-    updateList({ type });
-  };
-}
+  const label = document.createElement('label');
+  label.textContent = field.label;
+
+  const input = document.createElement('input');
+  input.type = field.type || 'text';
+  input.name = field.name;
+  input.placeholder = field.placeholder;
+  input.required = true;
+
+  inputGroup.appendChild(label);
+  inputGroup.appendChild(input);
+
+  return inputGroup;
+};
 
 /*
   --------------------------------------------------------------------------------------
@@ -207,13 +303,15 @@ const postData = async ({ type, body }) => {
     const data = await response.json();
 
     if (!response.ok) {
-        console.error("API Error:", data);
-        throw new Error(data.errors ? JSON.stringify(data.errors) : "Unknown error");
+      console.error('API Error:', data);
+      throw new Error(
+        data.errors ? JSON.stringify(data.errors) : 'Unknown error',
+      );
     }
   } catch (error) {
-    console.error("Request failed:", error);
+    console.error('Request failed:', error);
     throw error;
-}
+  }
 };
 
 /*
@@ -260,4 +358,19 @@ const getTableStructure = () => {
     tableContainer: document.getElementById('table-wrapper'),
     noDataMessage: document.getElementById('no-data-message'),
   };
+};
+
+const processFormData = (formData) => {
+  const processedData = { ...formData };
+  if (processedData.price) {
+    processedData.price = parseInt(processedData.price, 10);
+  }
+  return processedData;
+};
+
+const formatTypeForTitle = (translatedType) => {
+  return (
+    translatedType.charAt(0).toUpperCase() +
+    translatedType.slice(1, translatedType.length - 1)
+  );
 };

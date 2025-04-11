@@ -126,3 +126,7 @@ td {
 .open-modal-btn:hover {
     background-color: #222222;
 }
+.error-container {
+    color: red; 
+    display: none;
+}
