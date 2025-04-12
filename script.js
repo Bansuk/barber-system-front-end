@@ -74,19 +74,19 @@ const fieldsByType = {
   ],
 };
 
-const createTableCell = (content) => {
+const createTableCell = ({ content }) => {
   const cell = document.createElement('td');
   cell.textContent = formatField({ field: content }) || '-';
   return cell;
 };
 
-const createHeaderCell = (headerText) => {
+const createHeaderCell = ({ headerText }) => {
   const th = document.createElement('th');
   th.textContent = headerText;
   return th;
 };
 
-const clearElement = (element) => {
+const clearElement = ({ element }) => {
   if (element) {
     element.innerHTML = '';
   }
@@ -96,11 +96,11 @@ const updateTableHeaders = ({ columns }) => {
   const headerRow = document.getElementById('table-header');
   if (!headerRow) return;
 
-  clearElement(headerRow);
+  clearElement({ element: headerRow });
 
   const fragment = document.createDocumentFragment();
   columns.forEach((column) => {
-    fragment.appendChild(createHeaderCell(column));
+    fragment.appendChild(createHeaderCell({ headerText: column }));
   });
 
   headerRow.appendChild(fragment);
@@ -110,7 +110,7 @@ const insertList = ({ data, columns }) => {
   const tableBody = document.getElementById('table-body');
   if (!tableBody) return;
 
-  clearElement(tableBody);
+  clearElement({ element: tableBody });
 
   const fragment = document.createDocumentFragment();
 
@@ -118,7 +118,7 @@ const insertList = ({ data, columns }) => {
     const row = document.createElement('tr');
 
     columns.forEach((column) => {
-      row.appendChild(createTableCell(item[column]));
+      row.appendChild(createTableCell({ content: item[column] }));
     });
 
     fragment.appendChild(row);
