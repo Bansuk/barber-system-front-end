@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      context: ../barber-system-back-end
+      dockerfile: Dockerfile
+    container_name: barber-system-backend
+    ports:
+      - "5000:5000"
+    networks:
+      - barber-system-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5000/api/docs/openapi.json"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://backend:5000
+    container_name: barber-system-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - barber-system-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  barber-system-network:
+    driver: bridge
