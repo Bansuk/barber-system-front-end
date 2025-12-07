@@ -1,5 +1,6 @@
 import React from 'react';
 import { Customer } from '@/types/customer';
+import { formatPhoneNumber } from '@/lib/utils/phoneMask';
 
 interface CustomerTableProps {
   customers: Customer[];
@@ -48,7 +49,7 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
                 </div>
               </td>
               <td className="px-6 py-4 text-gray-700">{customer.email}</td>
-              <td className="px-6 py-4 text-gray-700">{customer.phone_number}</td>
+              <td className="px-6 py-4 text-gray-700">{formatPhoneNumber(customer.phone_number)}</td>
               <td className="px-6 py-4">
                 <div className="flex items-center gap-3">
                   <button

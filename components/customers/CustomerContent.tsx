@@ -4,6 +4,7 @@ import React, { useState, useTransition } from 'react';
 import { Customer } from '@/types/customer';
 import { CustomerTable } from '@/components/customers/CustomerTable';
 import { AddCustomerModal } from '@/components/customers/AddCustomerModal';
+import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { createCustomer, deleteCustomer } from '@/app/(dashboard)/customers/actions';
 
@@ -13,6 +14,8 @@ interface CustomersContentProps {
 
 export function CustomersContent({ customers }: CustomersContentProps) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [customerToDelete, setCustomerToDelete] = useState<Customer | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -21,15 +24,19 @@ export function CustomersContent({ customers }: CustomersContentProps) {
   };
 
   const handleSaveCustomer = async (customerData: Omit<Customer, 'id'>) => {
-    startTransition(async () => {
-      const result = await createCustomer(customerData);
-      
-      if (result.success) {
-        setIsAddModalOpen(false);
-        setError(null);
-      } else {
-        setError(result.error || 'Failed to save customer');
-      }
+    return new Promise<{ success: boolean; error?: string }>((resolve) => {
+      startTransition(async () => {
+        const result = await createCustomer(customerData);
+        
+        if (result.success) {
+          setIsAddModalOpen(false);
+          setError(null);
+        } else {
+          setError(result.error || 'Failed to save customer');
+        }
+        
+        resolve(result);
+      });
     });
   };
 
@@ -38,22 +45,31 @@ export function CustomersContent({ customers }: CustomersContentProps) {
     setIsAddModalOpen(true);
   };
 
-  const handleDeleteCustomer = async (customer: Customer) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete ${customer.name}?`
-    );
-    
-    if (confirmed) {
-      startTransition(async () => {        
-        const result = await deleteCustomer(customer.id);
-        
-        if (!result.success) {
-          setError(result.error || 'Failed to delete customer');
-        } else {
-          setError(null);
-        }
-      });
-    }
+  const handleDeleteCustomer = (customer: Customer) => {
+    setCustomerToDelete(customer);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!customerToDelete) return;
+
+    startTransition(async () => {        
+      const result = await deleteCustomer(customerToDelete.id);
+      
+      if (!result.success) {
+        setError(result.error || 'Failed to delete customer');
+      } else {
+        setError(null);
+      }
+      
+      setIsDeleteModalOpen(false);
+      setCustomerToDelete(null);
+    });
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false);
+    setCustomerToDelete(null);
   };
 
   const handleModalClose = () => {
@@ -78,25 +94,6 @@ export function CustomersContent({ customers }: CustomersContentProps) {
         }
       />
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-            <p className="text-red-800">{error}</p>
-            <button
-              onClick={() => setError(null)}
-              className="mt-2 text-red-600 hover:text-red-800 underline"
-            >
-              Dismiss
-            </button>
-          </div>
-        )}
-
-        {isPending && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-            <p className="text-blue-800">Updating...</p>
-          </div>
-        )}
-
         <CustomerTable
           customers={customers}
           onEdit={handleEditCustomer}
@@ -108,6 +105,16 @@ export function CustomersContent({ customers }: CustomersContentProps) {
         isOpen={isAddModalOpen}
         onClose={handleModalClose}
         onSave={handleSaveCustomer}
+      />
+      
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        description={`Esta ação não pode ser desfeita. 
+          Isso irá remover permanentemente o cliente ${customerToDelete?.name || ''} do sistema.`}
+        isLoading={isPending}
+        title={"Deletar Cliente"}
       />
     </>
   );

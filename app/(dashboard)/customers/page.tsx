@@ -2,6 +2,8 @@ import { customerService } from '@/services/customerService';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { CustomersContent } from '@/components/customers/CustomerContent';
 
+export const dynamic = 'force-dynamic';
+
 export default async function CustomerManagementPage() {
   const customers = await customerService.getAll();  
 

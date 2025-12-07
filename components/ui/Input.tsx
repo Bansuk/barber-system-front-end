@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatPhoneNumber, unformatPhoneNumber } from '@/lib/utils/phoneMask';
 
 interface InputProps {
   label: string;
@@ -30,14 +31,16 @@ export const Input: React.FC<InputProps> = ({
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === 'tel') {
-      // keep only digits
-      const onlyNumbers = e.target.value.replace(/\D/g, '');
-      // mutate the event target value before passing it up
+      // Remove all formatting and keep only digits
+      const onlyNumbers = unformatPhoneNumber(e.target.value);
+      // Store unformatted value
       e.target.value = onlyNumbers;
     }
 
     onChange(e);
   };
+
+  const displayValue = type === 'tel' ? formatPhoneNumber(value) : value;
 
 
   return (
@@ -50,7 +53,7 @@ export const Input: React.FC<InputProps> = ({
         type={type}
         id={name}
         name={name}
-        value={value}
+        value={displayValue}
         onChange={handleChange}
         inputMode={type === 'tel' ? 'numeric' : undefined}
         placeholder={placeholder}
