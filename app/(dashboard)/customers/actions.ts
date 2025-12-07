@@ -17,6 +17,19 @@ export async function createCustomer(customerData: Omit<Customer, 'id'>) {
   }
 }
 
+export async function updateCustomer(id: number, customerData: Partial<Customer>) {
+  try {
+    await customerService.update(id, customerData);
+    revalidatePath('/customers');
+    revalidatePath('/dashboard');
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating customer:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update customer';
+    return { success: false, error: errorMessage };
+  }
+}
+
 export async function deleteCustomer(id: number) {
   try {
     await customerService.delete(id);

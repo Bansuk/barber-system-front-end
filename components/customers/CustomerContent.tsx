@@ -4,9 +4,10 @@ import React, { useState, useTransition } from 'react';
 import { Customer } from '@/types/customer';
 import { CustomerTable } from '@/components/customers/CustomerTable';
 import { AddCustomerModal } from '@/components/customers/AddCustomerModal';
+import { EditCustomerModal } from '@/components/customers/EditCustomerModal';
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
 import { PageHeader } from '@/components/layout/PageHeader';
-import { createCustomer, deleteCustomer } from '@/app/(dashboard)/customers/actions';
+import { createCustomer, updateCustomer, deleteCustomer } from '@/app/(dashboard)/customers/actions';
 
 interface CustomersContentProps {
   customers: Customer[];
@@ -14,7 +15,9 @@ interface CustomersContentProps {
 
 export function CustomersContent({ customers }: CustomersContentProps) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [customerToEdit, setCustomerToEdit] = useState<Customer | null>(null);
   const [customerToDelete, setCustomerToDelete] = useState<Customer | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -41,8 +44,26 @@ export function CustomersContent({ customers }: CustomersContentProps) {
   };
 
   const handleEditCustomer = (customer: Customer) => {
-    console.log('Edit customer:', customer);
-    setIsAddModalOpen(true);
+    setCustomerToEdit(customer);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateCustomer = async (id: number, customerData: Partial<Customer>) => {
+    return new Promise<{ success: boolean; error?: string }>((resolve) => {
+      startTransition(async () => {
+        const result = await updateCustomer(id, customerData);
+        
+        if (result.success) {
+          setIsEditModalOpen(false);
+          setCustomerToEdit(null);
+          setError(null);
+        } else {
+          setError(result.error || 'Failed to update customer');
+        }
+        
+        resolve(result);
+      });
+    });
   };
 
   const handleDeleteCustomer = (customer: Customer) => {
@@ -99,12 +120,21 @@ export function CustomersContent({ customers }: CustomersContentProps) {
           onEdit={handleEditCustomer}
           onDelete={handleDeleteCustomer}
         />
-      </div>
       
       <AddCustomerModal 
         isOpen={isAddModalOpen}
         onClose={handleModalClose}
         onSave={handleSaveCustomer}
+      />
+      
+      <EditCustomerModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setCustomerToEdit(null);
+        }}
+        onSave={handleUpdateCustomer}
+        customer={customerToEdit}
       />
       
       <DeleteConfirmationModal
