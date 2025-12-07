@@ -1,5 +1,35 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
+interface ApiError {
+  errors?: {
+    json?: Record<string, string[]>;
+  };
+  message?: string;
+}
+
+const handleApiError = async (response: Response): Promise<never> => {
+  let errorMessage = `API Error: ${response.statusText}`;
+  
+  try {
+    const errorData: ApiError = await response.json();
+    
+    // Check for Flask-Smorest error format
+    if (errorData.errors?.json) {
+      const errors = errorData.errors.json;
+      const firstError = Object.values(errors)[0];
+      if (firstError && firstError.length > 0) {
+        errorMessage = firstError[0];
+      }
+    } else if (errorData.message) {
+      errorMessage = errorData.message;
+    }
+  } catch (e) {
+    // If JSON parsing fails, use default error message
+  }
+  
+  throw new Error(errorMessage);
+};
+
 export const api = {
   get: async (endpoint: string) => {
     const response = await fetch(`${API_URL}${endpoint}`, {
@@ -9,7 +39,7 @@ export const api = {
       },
     });
 
-    if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+    if (!response.ok) await handleApiError(response);
 
     return response.json();
   },
@@ -23,7 +53,7 @@ export const api = {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+    if (!response.ok) await handleApiError(response);
 
     return response.json();
   },
@@ -37,7 +67,7 @@ export const api = {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+    if (!response.ok) await handleApiError(response);
 
     return response.json();
   },
@@ -50,7 +80,7 @@ export const api = {
       },
     });
 
-    if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+    if (!response.ok) await handleApiError(response);
   },
 };
 

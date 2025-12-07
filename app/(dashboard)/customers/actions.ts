@@ -8,10 +8,12 @@ export async function createCustomer(customerData: Omit<Customer, 'id'>) {
   try {
     await customerService.create(customerData);
     revalidatePath('/customers');
+    revalidatePath('/dashboard');
     return { success: true };
   } catch (error) {
     console.error('Error creating customer:', error);
-    return { success: false, error: 'Failed to create customer' };
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create customer';
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -19,9 +21,11 @@ export async function deleteCustomer(id: number) {
   try {
     await customerService.delete(id);
     revalidatePath('/customers');
+    revalidatePath('/dashboard');
     return { success: true };
   } catch (error) {
     console.error('Error deleting customer:', error);
-    return { success: false, error: 'Failed to delete customer' };
+    const errorMessage = error instanceof Error ? error.message : 'Failed to delete customer';
+    return { success: false, error: errorMessage };
   }
 }

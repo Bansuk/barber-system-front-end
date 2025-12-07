@@ -3,11 +3,12 @@ import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Customer } from '@/types/customer';
+import { useToast } from '@/contexts/ToastContext';
 
 interface AddCustomerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (customer: Omit<Customer, 'id'>) => Promise<void>;
+  onSave: (customer: Omit<Customer, 'id'>) => Promise<{ success: boolean; error?: string }>;
 }
 
 export const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
@@ -15,6 +16,7 @@ export const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
   onClose,
   onSave,
 }) => {
+  const { showSuccess, showError } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -57,18 +59,23 @@ export const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
 
     try {
       setLoading(true);
-      await onSave({
+      const result = await onSave({
         name: formData.name,
         email: formData.email,
         phone_number: formData.phone,
       });
       
-      setFormData({ name: '', email: '', phone: '' });
-      setErrors({});
-      onClose();
+      if (result.success) {
+        showSuccess('Cliente adicionado com sucesso!');
+        setFormData({ name: '', email: '', phone: '' });
+        setErrors({});
+        onClose();
+      } else {
+        showError(result.error || 'Falha ao salvar cliente. Tente novamente.');
+      }
     } catch (error) {
       console.error('Error saving customer:', error);
-      alert('Failed to save customer. Please try again.');
+      showError('Falha ao salvar cliente. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -111,7 +118,7 @@ export const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
           label="Telefone"
           name="phone"
           type="tel"
-          placeholder="(99) 999999999"
+          placeholder="(99) 99999-9999"
           value={formData.phone}
           onChange={handleChange}
           required
