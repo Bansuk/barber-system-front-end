@@ -43,7 +43,7 @@ export const Sidebar: React.FC = () => {
               <path d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <span className="text-xl font-bold">Barbser System</span>
+          <span className="text-xl font-bold">Barber System</span>
         </div>
       </div>
 
