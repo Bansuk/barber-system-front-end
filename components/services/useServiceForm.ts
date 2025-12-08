@@ -23,6 +23,7 @@ export const useServiceForm = ({ initialData, onSuccess }: UseServiceFormProps =
     if (initialData) {
       setFormData({
         name: initialData.name,
+        // Store price as cents (unformatted) for consistency with input handling
         price: initialData.price.toString(),
       });
     } else {

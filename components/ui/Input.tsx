@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatPhoneNumber, unformatPhoneNumber } from '@/lib/utils/phoneMask';
+import { formatPrice, unformatPrice } from '@/lib/utils/priceMask';
 
 interface InputProps {
   label: string;
@@ -35,12 +36,21 @@ export const Input: React.FC<InputProps> = ({
       const onlyNumbers = unformatPhoneNumber(e.target.value);
       // Store unformatted value
       e.target.value = onlyNumbers;
+    } else if (type === 'price') {
+      // Remove all formatting and keep only digits (cents)
+      const onlyNumbers = unformatPrice(e.target.value);
+      // Store unformatted value
+      e.target.value = onlyNumbers;
     }
 
     onChange(e);
   };
 
-  const displayValue = type === 'tel' ? formatPhoneNumber(value) : value;
+  const displayValue = type === 'tel' 
+    ? formatPhoneNumber(value) 
+    : type === 'price' 
+    ? formatPrice(value)
+    : value;
 
 
   return (
@@ -55,7 +65,7 @@ export const Input: React.FC<InputProps> = ({
         name={name}
         value={displayValue}
         onChange={handleChange}
-        inputMode={type === 'tel' ? 'numeric' : undefined}
+        inputMode={type === 'tel' || type === 'price' ? 'numeric' : undefined}
         placeholder={placeholder}
         required={required}
         disabled={disabled}

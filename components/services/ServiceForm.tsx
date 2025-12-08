@@ -36,7 +36,7 @@ export const ServiceForm: React.FC<ServiceFormProps> = ({
         label="Preço"
         name="price"
         type="price"
-        placeholder="Digite o price do serviço"
+        placeholder="R$ 0,00"
         value={formData.price}
         onChange={onChange}
         required
