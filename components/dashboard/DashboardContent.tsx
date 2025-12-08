@@ -1,6 +1,6 @@
 'use client';
 
-import { DashboardStats } from '@/types/dashboard';
+import { DashboardStats } from '@/types';
 import { StatCard } from '@/components/dashboard/StatCard';
 
 interface DashboardContentProps {

@@ -1,10 +1,6 @@
 import React from 'react';
 import { Input } from '@/components/ui/Input';
-
-interface ServiceFormData {
-  name: string;
-  price: string;
-}
+import { ServiceFormData } from '@/types';
 
 interface ServiceFormProps {
   formData: ServiceFormData;

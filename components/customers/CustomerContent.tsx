@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Customer } from '@/types/customer';
+import { Customer } from '@/types';
 import { CustomerTable } from '@/components/customers/CustomerTable';
 import { AddCustomerModal } from '@/components/customers/AddCustomerModal';
 import { EditCustomerModal } from '@/components/customers/EditCustomerModal';

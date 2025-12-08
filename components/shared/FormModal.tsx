@@ -2,18 +2,7 @@ import React, { ReactNode } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { useToast } from '@/contexts/ToastContext';
-
-interface FormHook<T, D> {
-  formData: D;
-  loading: boolean;
-  errors: Record<string, string>;
-  setLoading: (loading: boolean) => void;
-  handleChange: (field: keyof D | React.ChangeEvent<HTMLInputElement>, value?: any) => void;
-  validateForm: () => boolean;
-  resetForm: () => void;
-  clearErrors: () => void;
-  toEntityData: () => Omit<T, 'id'>;
-}
+import { FormHook } from '@/types';
 
 interface FormModalConfig {
   addTitle: string;

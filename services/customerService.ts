@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import { Customer } from '@/types/customer';
+import { Customer } from '@/types';
 
 export const customerService = {
   getAll: async (): Promise<Customer[]> => {

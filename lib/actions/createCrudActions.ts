@@ -1,17 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-
-interface CrudService<T> {
-  create: (data: Omit<T, 'id'>) => Promise<T>;
-  update: (id: number, data: Partial<T>) => Promise<T>;
-  delete: (id: number) => Promise<void>;
-}
-
-interface CrudActionsConfig {
-  entityName: string;
-  revalidatePaths: string[];
-}
+import { CrudService, CrudActionsConfig } from '@/types';
 
 export async function createCrudActions<T extends { id: number }>(
   service: CrudService<T>,

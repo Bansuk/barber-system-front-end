@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Service } from '@/types/service';
+import { Service } from '@/types';
 import { ServiceTable } from './ServiceTable';
 import { AddServiceModal } from '@/components/services/AddServiceModal';
 import { EditServiceModal } from '@/components/services/EditServiceModal';

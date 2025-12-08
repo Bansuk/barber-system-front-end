@@ -1,5 +1,5 @@
 import React from 'react';
-import { Service } from '@/types/service';
+import { Service } from '@/types';
 import { priceMask } from '@/lib/utils/priceMask';
 import { DataTable, Column } from '@/components/shared/DataTable';
 

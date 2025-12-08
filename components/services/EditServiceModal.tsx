@@ -1,5 +1,5 @@
 import React from 'react';
-import { Service } from '@/types/service';
+import { Service } from '@/types';
 import { ServiceFormModal } from '@/components/services/ServiceFormModal';
 
 interface EditServiceModalProps {

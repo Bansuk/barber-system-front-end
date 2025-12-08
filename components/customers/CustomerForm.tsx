@@ -1,11 +1,6 @@
 import React from 'react';
 import { Input } from '@/components/ui/Input';
-
-interface CustomerFormData {
-  name: string;
-  email: string;
-  phone: string;
-}
+import { CustomerFormData } from '@/types';
 
 interface CustomerFormProps {
   formData: CustomerFormData;

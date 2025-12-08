@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import  { Service }  from '@/types/service';
+import  { Service }  from '@/types';
 
 export const serviceService = {
   getAll: async (): Promise<Service[]> => api.get('/services'),

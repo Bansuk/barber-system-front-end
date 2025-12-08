@@ -1,7 +1,7 @@
 import React from 'react';
 import { CustomerForm } from '@/components/customers/CustomerForm';
 import { useCustomerForm } from '@/components/customers/useCustomerForm';
-import { Customer } from '@/types/customer';
+import { Customer, CustomerFormData } from '@/types';
 import { FormModal } from '@/components/shared/FormModal';
 
 interface CustomerFormModalProps {
@@ -10,12 +10,6 @@ interface CustomerFormModalProps {
   onSave: (data: any) => Promise<{ success: boolean; error?: string }>;
   customer?: Customer | null;
   mode: 'add' | 'edit';
-}
-
-interface CustomerFormData {
-  name: string;
-  email: string;
-  phone: string;
 }
 
 const customerFormConfig = {

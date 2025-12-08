@@ -1,11 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Customer } from '@/types/customer';
-
-interface CustomerFormData {
-  name: string;
-  email: string;
-  phone: string;
-}
+import { Customer, CustomerFormData } from '@/types';
 
 interface UseCustomerFormProps {
   initialData?: Customer | null;

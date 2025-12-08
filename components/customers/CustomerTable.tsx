@@ -1,5 +1,5 @@
 import React from 'react';
-import { Customer } from '@/types/customer';
+import { Customer } from '@/types';
 import { formatPhoneNumber } from '@/lib/utils/phoneMask';
 import { DataTable, Column } from '@/components/shared/DataTable';
 

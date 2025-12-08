@@ -1,7 +1,7 @@
 import React from 'react';
 import { ServiceForm } from './ServiceForm';
 import { useServiceForm } from './useServiceForm';
-import { Service } from '@/types/service';
+import { Service, ServiceFormData } from '@/types';
 import { FormModal } from '@/components/shared/FormModal';
 
 interface ServiceFormModalProps {
@@ -10,11 +10,6 @@ interface ServiceFormModalProps {
   onSave: (data: any) => Promise<{ success: boolean; error?: string }>;
   service?: Service | null;
   mode: 'add' | 'edit';
-}
-
-interface ServiceFormData {
-  name: string;
-  price: string;
 }
 
 const serviceFormConfig = {

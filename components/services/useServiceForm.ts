@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Service } from '@/types/service';
-
-interface ServiceFormData {
-  name: string;
-  price: string;
-}
+import { Service, ServiceFormData } from '@/types';
 
 interface UseServiceFormProps {
   initialData?: Service | null;

@@ -1,10 +1,5 @@
 import React, { ReactNode } from 'react';
-
-export interface Column<T> {
-  key: string;
-  label: string;
-  render: (item: T) => ReactNode;
-}
+import { Column } from '@/types';
 
 interface DataTableProps<T extends { id: number }> {
   items: T[];

@@ -1,11 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+import { ApiError } from '@/types';
 
-interface ApiError {
-  errors?: {
-    json?: Record<string, string[]>;
-  };
-  message?: string;
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 const handleApiError = async (response: Response): Promise<never> => {
   let errorMessage = `API Error: ${response.statusText}`;
