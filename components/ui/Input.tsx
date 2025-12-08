@@ -4,7 +4,7 @@ import { formatPhoneNumber, unformatPhoneNumber } from '@/lib/utils/phoneMask';
 interface InputProps {
   label: string;
   name: string;
-  type?: 'text' | 'email' | 'tel';
+  type?: 'text' | 'email' | 'tel' | 'price';
   placeholder?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

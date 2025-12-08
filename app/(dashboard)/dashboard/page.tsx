@@ -6,7 +6,7 @@ import { DashboardContent } from '@/components/dashboard/DashboardContent';
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
-  const stats = await dashboardService.getStats();
+  const stats = await dashboardService.getStats();  
 
   return (
     <DashboardLayout>
