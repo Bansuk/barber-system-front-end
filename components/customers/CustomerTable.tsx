@@ -1,7 +1,7 @@
 import React from 'react';
-import { Customer } from '@/types';
+import { Customer, Column } from '@/types';
 import { formatPhoneNumber } from '@/lib/utils/phoneMask';
-import { DataTable, Column } from '@/components/shared/DataTable';
+import { DataTable } from '@/components/shared/DataTable';
 
 interface CustomerTableProps {
   customers: Customer[];
@@ -29,7 +29,7 @@ const customerColumns: Column<Customer>[] = [
   {
     key: 'phone',
     label: 'Telefone',
-    render: (customer) => formatPhoneNumber(customer.phone_number),
+    render: (customer) => formatPhoneNumber(customer.phoneNumber),
   },
 ];
 
