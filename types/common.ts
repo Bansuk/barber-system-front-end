@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 
-// API Related Types
 export interface ApiError {
   errors?: {
     json?: Record<string, string[]>;
@@ -8,14 +7,12 @@ export interface ApiError {
   message?: string;
 }
 
-// Table/DataTable Types
 export interface Column<T> {
   key: string;
   label: string;
   render: (item: T) => ReactNode;
 }
 
-// CRUD Service Types
 export interface CrudService<T> {
   create: (data: Omit<T, 'id'>) => Promise<T>;
   update: (id: number, data: Partial<T>) => Promise<T>;
@@ -33,7 +30,6 @@ export interface CrudActions<T> {
   onDelete: (item: T) => void;
 }
 
-// Form Hook Types
 export interface FormHook<T, D> {
   formData: D;
   loading: boolean;
@@ -46,7 +42,6 @@ export interface FormHook<T, D> {
   toEntityData: () => Omit<T, 'id'>;
 }
 
-// Form Data Types
 export interface CustomerFormData {
   name: string;
   email: string;

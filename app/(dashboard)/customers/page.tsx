@@ -1,6 +1,6 @@
+import { CustomersContent } from '@/components/customers/CustomerContent';
 import { customerService } from '@/services/customerService';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { CustomersContent } from '@/components/customers/CustomerContent';
 
 export const dynamic = 'force-dynamic';
 

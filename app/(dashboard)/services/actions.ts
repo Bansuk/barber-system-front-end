@@ -1,8 +1,8 @@
 'use server';
 
-import { serviceService } from '@/services/serviceService';
-import { Service } from '@/types';
 import { createCrudActions } from '@/lib/actions/createCrudActions';
+import { Service } from '@/types';
+import { serviceService } from '@/services/serviceService';
 
 const { create, update, delete: deleteAction } = await createCrudActions<Service>(
   serviceService,

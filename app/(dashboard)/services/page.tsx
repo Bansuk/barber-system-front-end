@@ -1,6 +1,6 @@
-import { serviceService } from '@/services/serviceService';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ServicesContent } from '@/components/services/ServiceContent';
+import { serviceService } from '@/services/serviceService';
 
 export const dynamic = 'force-dynamic';
 

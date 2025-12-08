@@ -1,7 +1,7 @@
-import { dashboardService } from '@/services/dashboardService';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { DashboardContent } from '@/components/dashboard/DashboardContent';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { dashboardService } from '@/services/dashboardService';
+import { PageHeader } from '@/components/layout/PageHeader';
 
 export const dynamic = 'force-dynamic';
 
