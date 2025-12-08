@@ -1,44 +1,17 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { customerService } from '@/services/customerService';
 import { Customer } from '@/types/customer';
+import { createCrudActions } from '@/lib/actions/createCrudActions';
 
-export async function createCustomer(customerData: Omit<Customer, 'id'>) {
-  try {
-    await customerService.create(customerData);
-    revalidatePath('/customers');
-    revalidatePath('/dashboard');
-    return { success: true };
-  } catch (error) {
-    console.error('Error creating customer:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Failed to create customer';
-    return { success: false, error: errorMessage };
+const { create, update, delete: deleteAction } = await createCrudActions<Customer>(
+  customerService,
+  {
+    entityName: 'customer',
+    revalidatePaths: ['/customers', '/dashboard'],
   }
-}
+);
 
-export async function updateCustomer(id: number, customerData: Partial<Customer>) {
-  try {
-    await customerService.update(id, customerData);
-    revalidatePath('/customers');
-    revalidatePath('/dashboard');
-    return { success: true };
-  } catch (error) {
-    console.error('Error updating customer:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Failed to update customer';
-    return { success: false, error: errorMessage };
-  }
-}
-
-export async function deleteCustomer(id: number) {
-  try {
-    await customerService.delete(id);
-    revalidatePath('/customers');
-    revalidatePath('/dashboard');
-    return { success: true };
-  } catch (error) {
-    console.error('Error deleting customer:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Failed to delete customer';
-    return { success: false, error: errorMessage };
-  }
-}
+export const createCustomer = create;
+export const updateCustomer = update;
+export const deleteCustomer = deleteAction;

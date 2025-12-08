@@ -30,12 +30,22 @@ export const useServiceForm = ({ initialData, onSuccess }: UseServiceFormProps =
     }
   }, [initialData]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
+  const handleChange = (field: keyof ServiceFormData | React.ChangeEvent<HTMLInputElement>, value?: any) => {
+    // Support both direct field updates and event-based updates
+    if (typeof field === 'string') {
+      // Direct field update (field, value)
+      setFormData((prev) => ({ ...prev, [field]: value }));
+      if (errors[field]) {
+        setErrors((prev) => ({ ...prev, [field]: '' }));
+      }
+    } else {
+      // Event-based update
+      const event = field as React.ChangeEvent<HTMLInputElement>;
+      const { name, value: eventValue } = event.target;
+      setFormData((prev) => ({ ...prev, [name]: eventValue }));
+      if (errors[name]) {
+        setErrors((prev) => ({ ...prev, [name]: '' }));
+      }
     }
   };
 
@@ -65,8 +75,10 @@ export const useServiceForm = ({ initialData, onSuccess }: UseServiceFormProps =
 
   const toServiceData = () => ({
     name: formData.name,
-    price: formData.price,
+    price: parseInt(formData.price, 10),
   });
+
+  const toEntityData = toServiceData;
 
   return {
     formData,
@@ -78,5 +90,6 @@ export const useServiceForm = ({ initialData, onSuccess }: UseServiceFormProps =
     resetForm,
     clearErrors,
     toServiceData,
+    toEntityData,
   };
 };

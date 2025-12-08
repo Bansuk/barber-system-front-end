@@ -15,8 +15,11 @@ export const EditServiceModal: React.FC<EditServiceModalProps> = ({
   onSave,
   service,
 }) => {
-  const handleSave = async ({ id, data }: { id: number; data: Partial<Service> }) => {
-    return onSave(id, data);
+  const handleSave = async (data: any) => {
+    if (data.id) {
+      return onSave(data.id, data.data);
+    }
+    return { success: false, error: 'No ID provided' };
   };
 
   return (

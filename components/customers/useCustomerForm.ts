@@ -33,12 +33,22 @@ export const useCustomerForm = ({ initialData, onSuccess }: UseCustomerFormProps
     }
   }, [initialData]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
+  const handleChange = (field: keyof CustomerFormData | React.ChangeEvent<HTMLInputElement>, value?: any) => {
+    // Support both direct field updates and event-based updates
+    if (typeof field === 'string') {
+      // Direct field update (field, value)
+      setFormData((prev) => ({ ...prev, [field]: value }));
+      if (errors[field]) {
+        setErrors((prev) => ({ ...prev, [field]: '' }));
+      }
+    } else {
+      // Event-based update
+      const event = field as React.ChangeEvent<HTMLInputElement>;
+      const { name, value: eventValue } = event.target;
+      setFormData((prev) => ({ ...prev, [name]: eventValue }));
+      if (errors[name]) {
+        setErrors((prev) => ({ ...prev, [name]: '' }));
+      }
     }
   };
 
@@ -79,6 +89,8 @@ export const useCustomerForm = ({ initialData, onSuccess }: UseCustomerFormProps
     phone_number: formData.phone,
   });
 
+  const toEntityData = toCustomerData;
+
   return {
     formData,
     loading,
@@ -89,5 +101,6 @@ export const useCustomerForm = ({ initialData, onSuccess }: UseCustomerFormProps
     resetForm,
     clearErrors,
     toCustomerData,
+    toEntityData,
   };
 };

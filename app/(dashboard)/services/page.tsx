@@ -4,7 +4,7 @@ import { ServicesContent } from '@/components/services/ServiceContent';
 
 export const dynamic = 'force-dynamic';
 
-export default async function CustomerManagementPage() {
+export default async function ServiceManagementPage() {
   const services = await serviceService.getAll();  
 
   return (
