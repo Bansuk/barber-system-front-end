@@ -7,7 +7,7 @@ import { FormModal } from '@/components/shared/FormModal';
 interface CustomerFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: any) => Promise<{ success: boolean; error?: string }>;
+  onSave: (data: Omit<Customer, 'id'> | { id: number; data: Omit<Customer, 'id'> }) => Promise<{ success: boolean; error?: string }>;
   customer?: Customer | null;
   mode: 'add' | 'edit';
 }
@@ -21,6 +21,14 @@ const customerFormConfig = {
   editErrorMessage: 'Falha ao atualizar cliente. Tente novamente.',
   entityName: 'customer',
 };
+
+const renderCustomerForm = (
+  formData: CustomerFormData,
+  errors: Record<string, string>,
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+) => (
+  <CustomerForm formData={formData} errors={errors} onChange={onChange} />
+);
 
 export const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
   isOpen,
@@ -37,9 +45,7 @@ export const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
       entity={customer}
       mode={mode}
       useFormHook={useCustomerForm}
-      renderForm={(formData, errors, onChange) => (
-        <CustomerForm formData={formData} errors={errors} onChange={onChange} />
-      )}
+      renderForm={renderCustomerForm}
       config={customerFormConfig}
     />
   );

@@ -20,7 +20,7 @@ export const useCustomerForm = ({ initialData, onSuccess }: UseCustomerFormProps
       setFormData({
         name: initialData.name,
         email: initialData.email,
-        phone: initialData.phone_number,
+        phone: initialData.phoneNumber,
       });
     } else {
       setFormData({ name: '', email: '', phone: '' });
@@ -80,7 +80,7 @@ export const useCustomerForm = ({ initialData, onSuccess }: UseCustomerFormProps
   const toCustomerData = () => ({
     name: formData.name,
     email: formData.email,
-    phone_number: formData.phone,
+    phoneNumber: formData.phone,
   });
 
   const toEntityData = toCustomerData;

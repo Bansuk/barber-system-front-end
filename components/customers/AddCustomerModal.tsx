@@ -13,11 +13,19 @@ export const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
   onClose,
   onSave,
 }) => {
+  const handleSave = async (data: Omit<Customer, 'id'> | { id: number; data: Omit<Customer, 'id'> }) => {
+    // In add mode, data should always be Omit<Customer, 'id'>
+    if ('id' in data) {
+      return { success: false, error: 'Unexpected data format for add mode' };
+    }
+    return onSave(data);
+  };
+
   return (
     <CustomerFormModal
       isOpen={isOpen}
       onClose={onClose}
-      onSave={onSave}
+      onSave={handleSave}
       mode="add"
     />
   );
