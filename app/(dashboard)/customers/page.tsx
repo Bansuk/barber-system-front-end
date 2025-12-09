@@ -3,6 +3,7 @@
 import { CustomerContent } from '@/components/customers/CustomerContent';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useCustomers } from '@/hooks/useCustomers';
+import { PageLoading } from '@/components/shared/Loading';
 
 export default function CustomerManagementPage() {
   const { data: customers = [], isLoading, error } = useCustomers();
@@ -18,7 +19,7 @@ export default function CustomerManagementPage() {
   if (isLoading) {
     return (
       <DashboardLayout>
-        <div>Carregando clientes...</div>
+        <PageLoading text="Carregando clientes..." />
       </DashboardLayout>
     );
   }
