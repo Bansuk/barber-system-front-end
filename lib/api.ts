@@ -8,7 +8,6 @@ const handleApiError = async (response: Response): Promise<never> => {
   try {
     const errorData: ApiError = await response.json();
     
-    // Check for Flask-Smorest error format
     if (errorData.errors?.json) {
       const errors = errorData.errors.json;
       const firstError = Object.values(errors)[0];
@@ -19,7 +18,7 @@ const handleApiError = async (response: Response): Promise<never> => {
       errorMessage = errorData.message;
     }
   } catch (e) {
-    // If JSON parsing fails, use default error message
+    throw(e);
   }
   
   throw new Error(errorMessage);

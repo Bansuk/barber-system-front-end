@@ -3,11 +3,11 @@ import type { ChangeEvent } from 'react';
 import { FormHook } from '@/types';
 
 export interface UseEntityFormOptions<T, D> {
-  initialData: T | null | undefined;
   createInitialFormData: (initialData?: T | null) => D;
-  validateForm: (formData: D) => Record<string, string>;
-  transformToEntity: (formData: D) => Omit<T, 'id'>;
   getEmptyFormData: () => D;
+  initialData: T | null | undefined;
+  transformToEntity: (formData: D) => Omit<T, 'id'>;
+  validateForm: (formData: D) => Record<string, string>;
 }
 
 function isInputChangeEvent(
@@ -34,42 +34,41 @@ export function useEntityForm<T, D extends object>({
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-    const handleChangeImpl = (field: unknown, value?: unknown): void => {
-    if (isInputChangeEvent(field)) {
-      const event = field;
-      const { name, value: eventValue } = event.target;
-      const key = name as keyof D;
+  const handleChangeImpl = (field: unknown, value?: unknown): void => {
+  if (isInputChangeEvent(field)) {
+    const event = field;
+    const { name, value: eventValue } = event.target;
+    const key = name as keyof D;
 
-      setFormData(prev => ({
-        ...prev,
-        [key]: eventValue as D[typeof key],
-      }));
+    setFormData(prev => ({
+      ...prev,
+      [key]: eventValue as D[typeof key],
+    }));
 
-      if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
 
-      return;
-    }
+    return;
+  }
 
-    if (
-      typeof field === 'string' ||
-      typeof field === 'number' ||
-      typeof field === 'symbol'
-    ) {
-      const key = field as keyof D;
-      const name = String(field);
+  if (
+    typeof field === 'string' ||
+    typeof field === 'number' ||
+    typeof field === 'symbol'
+  ) {
+    const key = field as keyof D;
+    const name = String(field);
+    const nextValue = value as D[typeof key];
 
-      const nextValue = value as D[typeof key];
+    setFormData(prev => ({
+      ...prev,
+      [key]: nextValue,
+    }));
 
-      setFormData(prev => ({
-        ...prev,
-        [key]: nextValue,
-      }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
 
-      if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
-
-      return;
-    }
-  };
+    return;
+  }
+};
 
   const handleChange = handleChangeImpl as FormHook<T, D>['handleChange'];
 
