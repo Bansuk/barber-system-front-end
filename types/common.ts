@@ -13,26 +13,12 @@ export interface Column<T> {
   render: (item: T) => ReactNode;
 }
 
-export interface CrudService<T> {
-  create: (data: Omit<T, 'id'>) => Promise<T>;
-  update: (id: number, data: Partial<T>) => Promise<T>;
-  delete: (id: number) => Promise<void>;
-  getAll: () => Promise<T[]>;
-  getById: (id: number) => Promise<T>;
-}
-
-export interface CrudActions<T> {
-  onAdd: () => void;
-  onEdit: (item: T) => void;
-  onDelete: (item: T) => void;
-}
-
 export interface FormHook<T, D> {
   formData: D;
   loading: boolean;
   errors: Record<string, string>;
   setLoading: (loading: boolean) => void;
-  handleChange: (field: keyof D | React.ChangeEvent<HTMLInputElement>, value?: any) => void;
+  handleChange: (field: keyof D | React.ChangeEvent<HTMLInputElement>, value?: unknown) => void;
   validateForm: () => boolean;
   resetForm: () => void;
   clearErrors: () => void;

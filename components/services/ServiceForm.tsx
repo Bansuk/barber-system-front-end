@@ -16,10 +16,10 @@ export const ServiceForm: React.FC<ServiceFormProps> = ({
   return (
     <>
       <Input
-        label="Nome"
-        name="name"
-        type="text"
-        placeholder="Digite o nome do serviço"
+        label='Nome'
+        name='name'
+        type='text'
+        placeholder='Digite o nome do serviço'
         value={formData.name}
         onChange={onChange}
         required
@@ -29,10 +29,10 @@ export const ServiceForm: React.FC<ServiceFormProps> = ({
       />
 
       <Input
-        label="Preço"
-        name="price"
-        type="price"
-        placeholder="R$ 0,00"
+        label='Preço'
+        name='price'
+        type='price'
+        placeholder='R$ 0,00'
         value={formData.price}
         onChange={onChange}
         required

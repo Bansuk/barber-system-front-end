@@ -1,5 +1,5 @@
 import React from 'react';
-import { Employee, EmployeeData, EmployeeFormData, SaveResult, Service } from '@/types';
+import { Employee, EmployeeData, EmployeeFormData, SaveResult } from '@/types';
 import { EmployeeForm } from '@/components/employees/EmployeeForm';
 import { FormModal } from '@/components/shared/FormModal';
 import { useEmployeeForm } from '@/hooks/useEmployeeForm';
@@ -41,13 +41,12 @@ export const EmployeeFormModal: React.FC<EmployeeFormModalProps> = ({
       handleChange('serviceIds', serviceIds);
     };
 
-    if (isLoadingServices) {
+    if (isLoadingServices)
       return (
-        <div className="py-4 text-center text-gray-500">
+        <div className='py-4 text-center text-gray-500'>
           Carregando serviços...
         </div>
       );
-    }
 
     return (
       <EmployeeForm

@@ -2,13 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { serviceService } from '@/services/serviceService';
 import { Service, ServiceData } from '@/types';
 
-// Query keys
 export const serviceKeys = {
   all: ['services'] as const,
   detail: (id: number) => ['services', id] as const,
 };
 
-// Queries
 export const useServices = () => {
   return useQuery({
     queryKey: serviceKeys.all,
@@ -24,7 +22,6 @@ export const useService = (id: number) => {
   });
 };
 
-// Mutations
 export const useCreateService = () => {
   const queryClient = useQueryClient();
 

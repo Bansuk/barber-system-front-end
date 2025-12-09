@@ -49,10 +49,10 @@ export const Input: React.FC<InputProps> = ({
     : value;
 
   return (
-    <div className="mb-4">
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-2">
+    <div className='mb-4'>
+      <label htmlFor={name} className='block text-sm font-medium text-gray-700 mb-2'>
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className='text-red-500 ml-1'>*</span>}
       </label>
       <input
         type={type}
@@ -72,7 +72,7 @@ export const Input: React.FC<InputProps> = ({
             : 'border-gray-300'
         } ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}`}
       />
-      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      {error && <p className='mt-1 text-sm text-red-600'>{error}</p>}
     </div>
   );
 };

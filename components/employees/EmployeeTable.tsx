@@ -14,9 +14,9 @@ const employeeColumns: Column<Employee>[] = [
     key: 'name',
     label: 'Nome',
     render: (employee) => (
-      <div className="flex items-center gap-3">
+      <div className='flex items-center gap-3'>
         <div>
-          <div className="font-medium text-gray-900">{employee.name}</div>
+          <div className='font-medium text-gray-900'>{employee.name}</div>
         </div>
       </div>
     ),
@@ -44,8 +44,8 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({
       columns={employeeColumns}
       onEdit={onEdit}
       onDelete={onDelete}
-      editAriaLabel="Edit employee"
-      deleteAriaLabel="Delete employee"
+      editAriaLabel='Edit employee'
+      deleteAriaLabel='Delete employee'
     />
   );
 };

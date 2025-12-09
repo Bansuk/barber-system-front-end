@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, ReactNode } from 'react';
-import { UseMutationResult } from '@tanstack/react-query';
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { SaveResult } from '@/types';
+import { UseMutationResult } from '@tanstack/react-query';
+import { useState, ReactNode } from 'react';
 
 interface CrudMutations<T> {
   create: UseMutationResult<T, Error, Omit<T, 'id'>, unknown>;
@@ -107,10 +107,10 @@ export function CrudContent<T extends { id: number; name: string }>({
           <button
             onClick={handleAdd}
             disabled={isPending}
-            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className='flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed'
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4v16m8-8H4' />
             </svg>
             {buttonLabel}
           </button>

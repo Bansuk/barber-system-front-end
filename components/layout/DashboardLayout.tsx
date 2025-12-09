@@ -9,9 +9,9 @@ interface DashboardLayoutProps {
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className='flex min-h-screen bg-gray-50'>
       <Sidebar />
-      <main className="flex-1 ml-64">
+      <main className='flex-1 ml-64'>
         {children}
       </main>
     </div>

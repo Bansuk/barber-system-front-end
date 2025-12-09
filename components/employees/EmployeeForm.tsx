@@ -21,10 +21,10 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
   return (
     <>
       <Input
-        label="Nome Completo"
-        name="name"
-        type="text"
-        placeholder="Digite o nome do funcionário(a)"
+        label='Nome Completo'
+        name='name'
+        type='text'
+        placeholder='Digite o nome do funcionário(a)'
         value={formData.name}
         onChange={onChange}
         required
@@ -34,10 +34,10 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
       />
 
       <Input
-        label="Email"
-        name="email"
-        type="email"
-        placeholder="Digite o email do funcionário(a)"
+        label='Email'
+        name='email'
+        type='email'
+        placeholder='Digite o email do funcionário(a)'
         value={formData.email}
         onChange={onChange}
         required
@@ -45,10 +45,10 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
       />
 
       <Input
-        label="Telefone"
-        name="phone"
-        type="tel"
-        placeholder="(99) 99999-9999"
+        label='Telefone'
+        name='phone'
+        type='tel'
+        placeholder='(99) 99999-9999'
         value={formData.phone}
         onChange={onChange}
         required
@@ -56,8 +56,8 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
       />
 
       <MultiSelect
-        label="Serviços"
-        name="serviceIds"
+        label='Serviços'
+        name='serviceIds'
         options={services}
         selectedIds={formData.serviceIds}
         onChange={onServiceChange}

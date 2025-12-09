@@ -21,7 +21,7 @@ export default function Loading({
   };
 
   const spinner = (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className='flex flex-col items-center justify-center gap-4'>
       <div className={`${sizeClasses[size]} border-gray-300 border-t-blue-600 rounded-full animate-spin`}></div>
       {text && (
         <p className={`${textSizes[size]} text-gray-600 dark:text-gray-400 animate-pulse`}>
@@ -32,7 +32,7 @@ export default function Loading({
   );
 
   return (
-    <div className="flex items-center justify-center p-8">
+    <div className='flex items-center justify-center p-8'>
       {spinner}
     </div>
   );

@@ -1,11 +1,11 @@
 'use client';
 
 import { AddEmployeeModal } from '@/components/employees/AddEmployeeModal';
-import { useCreateEmployee, useUpdateEmployee, useDeleteEmployee } from '@/hooks/useEmployees';
 import { CrudContent } from '@/components/shared/CrudContent';
+import { EditEmployeeModal } from '@/components/employees/EditEmployeeModal';
 import { Employee } from '@/types';
 import { EmployeeTable } from '@/components/employees/EmployeeTable';
-import { EditEmployeeModal } from '@/components/employees/EditEmployeeModal';
+import { useCreateEmployee, useUpdateEmployee, useDeleteEmployee } from '@/hooks/useEmployees';
 
 interface EmployeesContentProps {
   employees: Employee[];
@@ -18,8 +18,8 @@ export function EmployeeContent({ employees }: EmployeesContentProps) {
 
   return (
     <CrudContent<Employee>
-      title="Funcionários"
-      buttonLabel="Novo Funcionário"
+      title='Funcionários'
+      buttonLabel='Novo Funcionário'
       items={employees}
       mutations={{
         create: createMutation,
@@ -48,7 +48,7 @@ export function EmployeeContent({ employees }: EmployeesContentProps) {
           employee={item}
         />
       )}
-      entityName="funcionário"
+      entityName='funcionário'
     />
   );
 }

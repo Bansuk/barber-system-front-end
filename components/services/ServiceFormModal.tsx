@@ -1,8 +1,8 @@
 import React from 'react';
+import { FormModal } from '@/components/shared/FormModal';
+import { Service, ServiceData, ServiceFormData, SaveResult } from '@/types';
 import { ServiceForm } from './ServiceForm';
 import { useServiceForm } from '@/hooks/useServiceForm';
-import { Service, ServiceData, ServiceFormData, SaveResult } from '@/types';
-import { FormModal } from '@/components/shared/FormModal';
 
 interface ServiceFormModalProps {
   isOpen: boolean;

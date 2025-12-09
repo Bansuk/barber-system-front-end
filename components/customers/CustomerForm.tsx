@@ -16,10 +16,10 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
   return (
     <>
       <Input
-        label="Nome Completo"
-        name="name"
-        type="text"
-        placeholder="Digite o nome do cliente"
+        label='Nome Completo'
+        name='name'
+        type='text'
+        placeholder='Digite o nome do cliente'
         value={formData.name}
         onChange={onChange}
         required
@@ -29,10 +29,10 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
       />
 
       <Input
-        label="Email"
-        name="email"
-        type="email"
-        placeholder="Digite o email do cliente"
+        label='Email'
+        name='email'
+        type='email'
+        placeholder='Digite o email do cliente'
         value={formData.email}
         onChange={onChange}
         required
@@ -40,10 +40,10 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
       />
 
       <Input
-        label="Telefone"
-        name="phone"
-        type="tel"
-        placeholder="(99) 99999-9999"
+        label='Telefone'
+        name='phone'
+        type='tel'
+        placeholder='(99) 99999-9999'
         value={formData.phone}
         onChange={onChange}
         required

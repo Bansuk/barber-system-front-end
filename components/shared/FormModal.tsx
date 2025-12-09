@@ -95,10 +95,10 @@ export function FormModal<T extends { id: number }, D>({
       <form onSubmit={handleSubmit}>
         {renderForm(formData, errors, handleChange)}
 
-        <div className="flex gap-3 mt-6">
+        <div className='flex gap-3 mt-6'>
           <Button
-            type="button"
-            variant="secondary"
+            type='button'
+            variant='secondary'
             onClick={handleCancel}
             disabled={loading}
             fullWidth
@@ -106,8 +106,8 @@ export function FormModal<T extends { id: number }, D>({
             Cancelar
           </Button>
           <Button
-            type="submit"
-            variant="primary"
+            type='submit'
+            variant='primary'
             disabled={loading}
             fullWidth
           >

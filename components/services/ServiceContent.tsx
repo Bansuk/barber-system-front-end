@@ -1,11 +1,11 @@
 'use client';
 
 import { AddServiceModal } from '@/components/services/AddServiceModal';
-import { useCreateService, useUpdateService, useDeleteService } from '@/hooks/useServices';
 import { CrudContent } from '@/components/shared/CrudContent';
 import { EditServiceModal } from '@/components/services/EditServiceModal';
 import { Service } from '@/types';
 import { ServiceTable } from '@/components/services/ServiceTable';
+import { useCreateService, useUpdateService, useDeleteService } from '@/hooks/useServices';
 
 interface ServiceContentProps {
   services: Service[];
@@ -18,8 +18,8 @@ export function ServiceContent({ services }: ServiceContentProps) {
 
   return (
     <CrudContent<Service>
-      title="Serviços"
-      buttonLabel="Novo Serviço"
+      title='Serviços'
+      buttonLabel='Novo Serviço'
       items={services}
       mutations={{
         create: createMutation,
@@ -48,7 +48,7 @@ export function ServiceContent({ services }: ServiceContentProps) {
           service={item}
         />
       )}
-      entityName="serviço"
+      entityName='serviço'
     />
   );
 }

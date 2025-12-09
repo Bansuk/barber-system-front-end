@@ -2,13 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { employeeService } from '@/services/employeeService';
 import { Employee, EmployeeData } from '@/types';
 
-// Query keys
 export const employeeKeys = {
   all: ['employees'] as const,
   detail: (id: number) => ['employees', id] as const,
 };
 
-// Queries
 export const useEmployees = () => {
   return useQuery({
     queryKey: employeeKeys.all,
@@ -24,7 +22,6 @@ export const useEmployee = (id: number) => {
   });
 };
 
-// Mutations
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
 

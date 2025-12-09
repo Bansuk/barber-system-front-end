@@ -18,15 +18,15 @@ export const StatCard: React.FC<StatCardProps> = ({
   valueColor = 'text-blue-600',
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
-      <div className="flex items-start gap-4">
+    <div className='bg-white rounded-lg shadow-sm p-6'>
+      <div className='flex items-start gap-4'>
         <div className={`${iconBgColor} rounded-lg p-3 flex-shrink-0`}>
           {icon}
         </div>
-        <div className="flex-1">
-          <p className="text-sm text-gray-600 mb-1">{title}</p>
+        <div className='flex-1'>
+          <p className='text-sm text-gray-600 mb-1'>{title}</p>
           <p className={`text-4xl font-bold ${valueColor}`}>{value}</p>
-          {subtitle && <div className="mt-2">{subtitle}</div>}
+          {subtitle && <div className='mt-2'>{subtitle}</div>}
         </div>
       </div>
     </div>

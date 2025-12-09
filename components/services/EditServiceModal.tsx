@@ -27,7 +27,7 @@ export const EditServiceModal: React.FC<EditServiceModalProps> = ({
       onClose={onClose}
       onSave={handleSave}
       service={service}
-      mode="edit"
+      mode='edit'
     />
   );
 };

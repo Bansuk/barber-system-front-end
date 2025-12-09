@@ -14,9 +14,9 @@ const serviceColumns: Column<Service>[] = [
     key: 'name',
     label: 'Nome',
     render: (service) => (
-      <div className="flex items-center gap-3">
+      <div className='flex items-center gap-3'>
         <div>
-          <div className="font-medium text-gray-900">{service.name}</div>
+          <div className='font-medium text-gray-900'>{service.name}</div>
         </div>
       </div>
     ),
@@ -39,8 +39,8 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
       columns={serviceColumns}
       onEdit={onEdit}
       onDelete={onDelete}
-      editAriaLabel="Edit service"
-      deleteAriaLabel="Delete service"
+      editAriaLabel='Edit service'
+      deleteAriaLabel='Delete service'
     />
   );
 };

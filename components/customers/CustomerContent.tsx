@@ -1,11 +1,11 @@
 'use client';
 
 import { AddCustomerModal } from '@/components/customers/AddCustomerModal';
-import { useCreateCustomer, useUpdateCustomer, useDeleteCustomer } from '@/hooks/useCustomers';
 import { CrudContent } from '@/components/shared/CrudContent';
 import { Customer } from '@/types';
 import { CustomerTable } from '@/components/customers/CustomerTable';
 import { EditCustomerModal } from '@/components/customers/EditCustomerModal';
+import { useCreateCustomer, useUpdateCustomer, useDeleteCustomer } from '@/hooks/useCustomers';
 
 interface CustomerContentProps {
   customers: Customer[];
@@ -18,8 +18,8 @@ export function CustomerContent({ customers }: CustomerContentProps) {
 
   return (
     <CrudContent<Customer>
-      title="Clientes"
-      buttonLabel="Novo Cliente"
+      title='Clientes'
+      buttonLabel='Novo Cliente'
       items={customers}
       mutations={{
         create: createMutation,
@@ -48,7 +48,7 @@ export function CustomerContent({ customers }: CustomerContentProps) {
           customer={item}
         />
       )}
-      entityName="cliente"
+      entityName='cliente'
     />
   );
 }

@@ -14,9 +14,9 @@ const customerColumns: Column<Customer>[] = [
     key: 'name',
     label: 'Nome',
     render: (customer) => (
-      <div className="flex items-center gap-3">
+      <div className='flex items-center gap-3'>
         <div>
-          <div className="font-medium text-gray-900">{customer.name}</div>
+          <div className='font-medium text-gray-900'>{customer.name}</div>
         </div>
       </div>
     ),
@@ -44,8 +44,8 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
       columns={customerColumns}
       onEdit={onEdit}
       onDelete={onDelete}
-      editAriaLabel="Edit customer"
-      deleteAriaLabel="Delete customer"
+      editAriaLabel='Edit customer'
+      deleteAriaLabel='Delete customer'
     />
   );
 };

@@ -18,7 +18,7 @@ export const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       onSave={onSave}
-      mode="add"
+      mode='add'
     />
   );
 };

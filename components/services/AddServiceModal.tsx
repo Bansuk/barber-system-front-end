@@ -18,7 +18,7 @@ export const AddServiceModal: React.FC<AddServiceModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       onSave={onSave}
-      mode="add"
+      mode='add'
     />
   );
 };

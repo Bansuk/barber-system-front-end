@@ -27,7 +27,7 @@ export const EditCustomerModal: React.FC<EditCustomerModalProps> = ({
       onClose={onClose}
       onSave={handleSave}
       customer={customer}
-      mode="edit"
+      mode='edit'
     />
   );
 };
