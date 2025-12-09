@@ -19,4 +19,3 @@ export type ApiCustomerData = {
 };
 
 export type CustomerData = Omit<Customer, 'id'>;
-export type CustomerUpdate = Partial<Omit<Customer, 'id'>>;

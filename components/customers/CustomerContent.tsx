@@ -7,11 +7,11 @@ import { Customer } from '@/types';
 import { CustomerTable } from '@/components/customers/CustomerTable';
 import { EditCustomerModal } from '@/components/customers/EditCustomerModal';
 
-interface CustomersContentProps {
+interface CustomerContentProps {
   customers: Customer[];
 }
 
-export function CustomersContent({ customers }: CustomersContentProps) {
+export function CustomerContent({ customers }: CustomerContentProps) {
   return (
     <CrudContent<Customer>
       title="Clientes"

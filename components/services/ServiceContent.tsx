@@ -7,11 +7,11 @@ import { EditServiceModal } from '@/components/services/EditServiceModal';
 import { Service } from '@/types';
 import { ServiceTable } from '@/components/services/ServiceTable';
 
-interface ServicesContentProps {
+interface ServiceContentProps {
   services: Service[];
 }
 
-export function ServicesContent({ services }: ServicesContentProps) {
+export function ServiceContent({ services }: ServiceContentProps) {
   return (
     <CrudContent<Service>
       title="Serviços"

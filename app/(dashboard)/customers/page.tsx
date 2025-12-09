@@ -1,4 +1,4 @@
-import { CustomersContent } from '@/components/customers/CustomerContent';
+import { CustomerContent } from '@/components/customers/CustomerContent';
 import { customerService } from '@/services/customerService';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -9,7 +9,7 @@ export default async function CustomerManagementPage() {
 
   return (
     <DashboardLayout>
-      <CustomersContent customers={customers} />
+      <CustomerContent customers={customers} />
     </DashboardLayout>
   );
 }

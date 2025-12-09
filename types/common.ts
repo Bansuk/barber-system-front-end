@@ -53,4 +53,10 @@ export interface ServiceFormData {
   price: string;
 }
 
+export interface EmployeeFormData {
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export type SaveResult = { success: boolean; error?: string };
