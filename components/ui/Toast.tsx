@@ -5,19 +5,19 @@ import React, { useEffect } from 'react';
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
 export interface ToastProps {
+  duration?: number;
   id: string;
   message: string;
-  type: ToastType;
-  duration?: number;
   onClose: (id: string) => void;
+  type: ToastType;
 }
 
 export const Toast: React.FC<ToastProps> = ({
+  duration = 5000,
   id,
   message,
-  type,
-  duration = 5000,
   onClose,
+  type,
 }) => {
   useEffect(() => {
     const timer = setTimeout(() => {

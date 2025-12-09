@@ -1,6 +1,6 @@
 import React from 'react';
 import { ServiceData, SaveResult } from '@/types';
-import { ServiceFormModal } from './ServiceFormModal';
+import { ServiceFormModal } from '@/components/services/ServiceFormModal';
 
 interface AddServiceModalProps {
   isOpen: boolean;

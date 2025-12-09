@@ -5,7 +5,7 @@ import { createService, updateService, deleteService } from '@/app/(dashboard)/s
 import { CrudContent } from '@/components/shared/CrudContent';
 import { EditServiceModal } from '@/components/services/EditServiceModal';
 import { Service } from '@/types';
-import { ServiceTable } from './ServiceTable';
+import { ServiceTable } from '@/components/services/ServiceTable';
 
 interface ServicesContentProps {
   services: Service[];

@@ -1,51 +1,51 @@
 import React, { ReactNode } from 'react';
-import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { useToast } from '@/contexts/ToastContext';
 import { FormHook, SaveResult } from '@/types';
+import { Modal } from '@/components/ui/Modal';
+import { useToast } from '@/contexts/ToastContext';
 
 interface FormModalConfig {
-  addTitle: string;
-  editTitle: string;
-  addSuccessMessage: string;
-  editSuccessMessage: string;
   addErrorMessage: string;
+  addSuccessMessage: string;
+  addTitle: string;
   editErrorMessage: string;
+  editSuccessMessage: string;
+  editTitle: string;
   entityName: string;
 }
 
 interface FormModalProps<T extends { id: number }, D> {
+  config: FormModalConfig;
+  entity?: T | null;
   isOpen: boolean;
+  mode: 'add' | 'edit';
   onClose: () => void;
   onSave: (data: Omit<T, 'id'>) => Promise<SaveResult>;
-  entity?: T | null;
-  mode: 'add' | 'edit';
-  useFormHook: (options: { initialData: T | null | undefined }) => FormHook<T, D>;
   renderForm: (formData: D, errors: Record<string, string>, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => ReactNode;
-  config: FormModalConfig;
+  useFormHook: (options: { initialData: T | null | undefined }) => FormHook<T, D>;
 }
 
 export function FormModal<T extends { id: number }, D>({
+  config,
+  entity,
   isOpen,
+  mode,
   onClose,
   onSave,
-  entity,
-  mode,
-  useFormHook,
   renderForm,
-  config,
+  useFormHook,
 }: FormModalProps<T, D>) {
   const { showSuccess, showError } = useToast();
   const {
-    formData,
-    loading,
-    errors,
-    setLoading,
-    handleChange,
-    validateForm,
-    resetForm,
     clearErrors,
+    errors,
+    formData,
+    handleChange,
+    loading,
+    resetForm,
+    setLoading,
     toEntityData,
+    validateForm,
   } = useFormHook({ initialData: entity });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,16 +63,13 @@ export function FormModal<T extends { id: number }, D>({
             ? config.addSuccessMessage
             : config.editSuccessMessage
         );
-        if (mode === 'add') {
-          resetForm();
-        }
+        if (mode === 'add') resetForm();
         onClose();
-      } else {
+      } else
         showError(
           result.error ||
             (mode === 'add' ? config.addErrorMessage : config.editErrorMessage)
         );
-      }
     } catch (error) {
       console.error(`Error ${mode === 'add' ? 'saving' : 'updating'} ${config.entityName}:`, error);
       showError(
@@ -84,11 +81,8 @@ export function FormModal<T extends { id: number }, D>({
   };
 
   const handleCancel = () => {
-    if (mode === 'add') {
-      resetForm();
-    } else {
-      clearErrors();
-    }
+    if (mode === 'add') resetForm();
+    else clearErrors();
     onClose();
   };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ServiceForm } from './ServiceForm';
-import { useServiceForm } from '../../hooks/useServiceForm';
+import { useServiceForm } from '@/hooks/useServiceForm';
 import { Service, ServiceData, ServiceFormData, SaveResult } from '@/types';
 import { FormModal } from '@/components/shared/FormModal';
 
@@ -39,6 +39,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
 }) => {
   return (
     <FormModal<Service, ServiceFormData>
+      key={service?.id ?? 'new'}
       isOpen={isOpen}
       onClose={onClose}
       onSave={onSave}

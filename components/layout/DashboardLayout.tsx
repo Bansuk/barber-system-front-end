@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Sidebar } from './Sidebar';
+import { Sidebar } from '@/components/layout/Sidebar';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

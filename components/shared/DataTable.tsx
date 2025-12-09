@@ -1,22 +1,21 @@
-import React, { ReactNode } from 'react';
 import { Column } from '@/types';
 
 interface DataTableProps<T extends { id: number }> {
-  items: T[];
   columns: Column<T>[];
-  onEdit: (item: T) => void;
-  onDelete: (item: T) => void;
-  editAriaLabel?: string;
   deleteAriaLabel?: string;
+  editAriaLabel?: string;
+  items: T[];
+  onDelete: (item: T) => void;
+  onEdit: (item: T) => void;
 }
 
 export function DataTable<T extends { id: number }>({
-  items,
   columns,
-  onEdit,
-  onDelete,
-  editAriaLabel = 'Edit item',
   deleteAriaLabel = 'Delete item',
+  editAriaLabel = 'Edit item',
+  items,
+  onDelete,
+  onEdit,
 }: DataTableProps<T>) {
   return (
     <div className="bg-white rounded-lg shadow-sm max-w-7xl mx-auto overflow-hidden">

@@ -3,43 +3,39 @@ import { formatPhoneNumber, unformatPhoneNumber } from '@/lib/utils/phoneMask';
 import { formatPrice, unformatPrice } from '@/lib/utils/priceMask';
 
 interface InputProps {
-  label: string;
-  name: string;
-  type?: 'text' | 'email' | 'tel' | 'price';
-  placeholder?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
-  error?: string;
   disabled?: boolean;
-  minLength?: number;
+  error?: string;
+  label: string;
   maxLength?: number;
+  minLength?: number;
+  name: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  required?: boolean;
+  type?: 'text' | 'email' | 'tel' | 'price';
+  value: string;
 }
 
 export const Input: React.FC<InputProps> = ({
-  label,
-  name,
-  type = 'text',
-  placeholder,
-  value,
-  onChange,
-  required = false,
-  error,
   disabled = false,
-  minLength,
+  error,
+  label,
   maxLength,
+  minLength,
+  name,
+  onChange,
+  placeholder,
+  required = false,
+  type = 'text',
+  value,
 }) => {
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === 'tel') {
-      // Remove all formatting and keep only digits
       const onlyNumbers = unformatPhoneNumber(e.target.value);
-      // Store unformatted value
       e.target.value = onlyNumbers;
     } else if (type === 'price') {
-      // Remove all formatting and keep only digits (cents)
       const onlyNumbers = unformatPrice(e.target.value);
-      // Store unformatted value
       e.target.value = onlyNumbers;
     }
 
@@ -51,7 +47,6 @@ export const Input: React.FC<InputProps> = ({
     : type === 'price' 
     ? formatPrice(value)
     : value;
-
 
   return (
     <div className="mb-4">

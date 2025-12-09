@@ -1,23 +1,22 @@
-import React from 'react';
-import { Modal } from './Modal';
-import { Button } from './Button';
+import { Button } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
 
 interface DeleteConfirmationModalProps {
+  description?: string;
+  isLoading?: boolean;
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   title: string;
-  description?: string;
-  isLoading?: boolean;
 }
 
 export function DeleteConfirmationModal({
+  description,
+  isLoading = false,
   isOpen,
   onClose,
   onConfirm,
   title,
-  description,
-  isLoading = false,
 }: DeleteConfirmationModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>

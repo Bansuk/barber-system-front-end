@@ -3,11 +3,12 @@
 import { useState, useTransition, ReactNode } from 'react';
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
 import { PageHeader } from '@/components/layout/PageHeader';
+import { SaveResult } from '@/types';
 
 interface CrudActions<T> {
-  create: (data: Omit<T, 'id'>) => Promise<{ success: boolean; error?: string }>;
-  delete: (id: number) => Promise<{ success: boolean; error?: string }>;
-  update: (id: number, data: Partial<T>) => Promise<{ success: boolean; error?: string }>;
+  create: (data: Omit<T, 'id'>) => Promise<SaveResult>;
+  delete: (id: number) => Promise<SaveResult>;
+  update: (id: number, data: Partial<T>) => Promise<SaveResult>;
 }
 
 interface CrudContentProps<T extends { id: number; name: string }> {
@@ -15,45 +16,39 @@ interface CrudContentProps<T extends { id: number; name: string }> {
   buttonLabel: string;
   entityName: string;
   items: T[];
-  renderAddModal: (isOpen: boolean, onClose: () => void, onSave: (data: Omit<T, 'id'>) => Promise<{ success: boolean; error?: string }>) => ReactNode;
-  renderEditModal: (isOpen: boolean, onClose: () => void, onSave: (id: number, data: Partial<T>) => Promise<{ success: boolean; error?: string }>, item: T | null) => ReactNode;
+  renderAddModal: (isOpen: boolean, onClose: () => void, onSave: (data: Omit<T, 'id'>) => Promise<SaveResult>) => ReactNode;
+  renderEditModal: (isOpen: boolean, onClose: () => void, onSave: (id: number, data: Partial<T>) => Promise<SaveResult>, item: T | null) => ReactNode;
   renderTable: (items: T[], onEdit: (item: T) => void, onDelete: (item: T) => void) => ReactNode;
   title: string;
 }
 
 export function CrudContent<T extends { id: number; name: string }>({
-  title,
-  buttonLabel,
-  items,
   actions,
-  renderTable,
+  buttonLabel,
+  entityName,
+  items,
   renderAddModal,
   renderEditModal,
-  entityName,
+  renderTable,
+  title,
 }: CrudContentProps<T>) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [itemToEdit, setItemToEdit] = useState<T | null>(null);
-  const [itemToDelete, setItemToDelete] = useState<T | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [itemToDelete, setItemToDelete] = useState<T | null>(null);
+  const [itemToEdit, setItemToEdit] = useState<T | null>(null);
 
   const handleAdd = () => {
     setIsAddModalOpen(true);
   };
 
   const handleSave = async (data: Omit<T, 'id'>) => {
-    return new Promise<{ success: boolean; error?: string }>((resolve) => {
+    return new Promise<SaveResult>((resolve) => {
       startTransition(async () => {
         const result = await actions.create(data);
         
-        if (result.success) {
-          setIsAddModalOpen(false);
-          setError(null);
-        } else {
-          setError(result.error || `Failed to save ${entityName}`);
-        }
+        if (result.success) setIsAddModalOpen(false);
         
         resolve(result);
       });
@@ -66,18 +61,15 @@ export function CrudContent<T extends { id: number; name: string }>({
   };
 
   const handleUpdate = async (id: number, data: Partial<T>) => {
-    return new Promise<{ success: boolean; error?: string }>((resolve) => {
+    return new Promise<SaveResult>((resolve) => {
       startTransition(async () => {
         const result = await actions.update(id, data);
         
         if (result.success) {
           setIsEditModalOpen(false);
           setItemToEdit(null);
-          setError(null);
-        } else {
-          setError(result.error || `Failed to update ${entityName}`);
         }
-        
+
         resolve(result);
       });
     });
@@ -92,13 +84,7 @@ export function CrudContent<T extends { id: number; name: string }>({
     if (!itemToDelete) return;
 
     startTransition(async () => {        
-      const result = await actions.delete(itemToDelete.id);
-      
-      if (!result.success) {
-        setError(result.error || `Failed to delete ${entityName}`);
-      } else {
-        setError(null);
-      }
+      await actions.delete(itemToDelete.id);
       
       setIsDeleteModalOpen(false);
       setItemToDelete(null);
