@@ -17,11 +17,8 @@ export interface CrudService<T> {
   create: (data: Omit<T, 'id'>) => Promise<T>;
   update: (id: number, data: Partial<T>) => Promise<T>;
   delete: (id: number) => Promise<void>;
-}
-
-export interface CrudActionsConfig {
-  entityName: string;
-  revalidatePaths: string[];
+  getAll: () => Promise<T[]>;
+  getById: (id: number) => Promise<T>;
 }
 
 export interface CrudActions<T> {

@@ -1,7 +1,7 @@
 'use client';
 
 import { AddServiceModal } from '@/components/services/AddServiceModal';
-import { createService, updateService, deleteService } from '@/app/(dashboard)/services/actions';
+import { useCreateService, useUpdateService, useDeleteService } from '@/hooks/useServices';
 import { CrudContent } from '@/components/shared/CrudContent';
 import { EditServiceModal } from '@/components/services/EditServiceModal';
 import { Service } from '@/types';
@@ -12,15 +12,19 @@ interface ServiceContentProps {
 }
 
 export function ServiceContent({ services }: ServiceContentProps) {
+  const createMutation = useCreateService();
+  const updateMutation = useUpdateService();
+  const deleteMutation = useDeleteService();
+
   return (
     <CrudContent<Service>
       title="Serviços"
       buttonLabel="Novo Serviço"
       items={services}
-      actions={{
-        create: createService,
-        update: updateService,
-        delete: deleteService,
+      mutations={{
+        create: createMutation,
+        update: updateMutation,
+        delete: deleteMutation,
       }}
       renderTable={(items, onEdit, onDelete) => (
         <ServiceTable

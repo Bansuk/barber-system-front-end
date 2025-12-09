@@ -1,7 +1,7 @@
 'use client';
 
 import { AddCustomerModal } from '@/components/customers/AddCustomerModal';
-import { createCustomer, updateCustomer, deleteCustomer } from '@/app/(dashboard)/customers/actions';
+import { useCreateCustomer, useUpdateCustomer, useDeleteCustomer } from '@/hooks/useCustomers';
 import { CrudContent } from '@/components/shared/CrudContent';
 import { Customer } from '@/types';
 import { CustomerTable } from '@/components/customers/CustomerTable';
@@ -12,15 +12,19 @@ interface CustomerContentProps {
 }
 
 export function CustomerContent({ customers }: CustomerContentProps) {
+  const createMutation = useCreateCustomer();
+  const updateMutation = useUpdateCustomer();
+  const deleteMutation = useDeleteCustomer();
+
   return (
     <CrudContent<Customer>
       title="Clientes"
       buttonLabel="Novo Cliente"
       items={customers}
-      actions={{
-        create: createCustomer,
-        update: updateCustomer,
-        delete: deleteCustomer,
+      mutations={{
+        create: createMutation,
+        update: updateMutation,
+        delete: deleteMutation,
       }}
       renderTable={(items, onEdit, onDelete) => (
         <CustomerTable

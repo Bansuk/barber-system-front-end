@@ -1,7 +1,7 @@
 'use client';
 
 import { AddEmployeeModal } from '@/components/employees/AddEmployeeModal';
-import { createEmployee, updateEmployee, deleteEmployee } from '@/app/(dashboard)/employees/actions';
+import { useCreateEmployee, useUpdateEmployee, useDeleteEmployee } from '@/hooks/useEmployees';
 import { CrudContent } from '@/components/shared/CrudContent';
 import { Employee } from '@/types';
 import { EmployeeTable } from '@/components/employees/EmployeeTable';
@@ -12,15 +12,19 @@ interface EmployeesContentProps {
 }
 
 export function EmployeeContent({ employees }: EmployeesContentProps) {
+  const createMutation = useCreateEmployee();
+  const updateMutation = useUpdateEmployee();
+  const deleteMutation = useDeleteEmployee();
+
   return (
     <CrudContent<Employee>
       title="Funcionários"
       buttonLabel="Novo Funcionário"
       items={employees}
-      actions={{
-        create: createEmployee,
-        update: updateEmployee,
-        delete: deleteEmployee,
+      mutations={{
+        create: createMutation,
+        update: updateMutation,
+        delete: deleteMutation,
       }}
       renderTable={(items, onEdit, onDelete) => (
         <EmployeeTable

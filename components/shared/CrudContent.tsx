@@ -1,18 +1,19 @@
 'use client';
 
-import { useState, useTransition, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
+import { UseMutationResult } from '@tanstack/react-query';
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { SaveResult } from '@/types';
 
-interface CrudActions<T> {
-  create: (data: Omit<T, 'id'>) => Promise<SaveResult>;
-  delete: (id: number) => Promise<SaveResult>;
-  update: (id: number, data: Partial<T>) => Promise<SaveResult>;
+interface CrudMutations<T> {
+  create: UseMutationResult<T, Error, Omit<T, 'id'>, unknown>;
+  update: UseMutationResult<T, Error, { id: number; data: Partial<T> }, unknown>;
+  delete: UseMutationResult<void, Error, number, unknown>;
 }
 
 interface CrudContentProps<T extends { id: number; name: string }> {
-  actions: CrudActions<T>;
+  mutations: CrudMutations<T>;
   buttonLabel: string;
   entityName: string;
   items: T[];
@@ -23,7 +24,7 @@ interface CrudContentProps<T extends { id: number; name: string }> {
 }
 
 export function CrudContent<T extends { id: number; name: string }>({
-  actions,
+  mutations,
   buttonLabel,
   entityName,
   items,
@@ -35,7 +36,6 @@ export function CrudContent<T extends { id: number; name: string }>({
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
   const [itemToDelete, setItemToDelete] = useState<T | null>(null);
   const [itemToEdit, setItemToEdit] = useState<T | null>(null);
 
@@ -43,16 +43,15 @@ export function CrudContent<T extends { id: number; name: string }>({
     setIsAddModalOpen(true);
   };
 
-  const handleSave = async (data: Omit<T, 'id'>) => {
-    return new Promise<SaveResult>((resolve) => {
-      startTransition(async () => {
-        const result = await actions.create(data);
-        
-        if (result.success) setIsAddModalOpen(false);
-        
-        resolve(result);
-      });
-    });
+  const handleSave = async (data: Omit<T, 'id'>): Promise<SaveResult> => {
+    try {
+      await mutations.create.mutateAsync(data);
+      setIsAddModalOpen(false);
+      return { success: true };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao criar';
+      return { success: false, error: errorMessage };
+    }
   };
 
   const handleEdit = (item: T) => {
@@ -60,19 +59,16 @@ export function CrudContent<T extends { id: number; name: string }>({
     setIsEditModalOpen(true);
   };
 
-  const handleUpdate = async (id: number, data: Partial<T>) => {
-    return new Promise<SaveResult>((resolve) => {
-      startTransition(async () => {
-        const result = await actions.update(id, data);
-        
-        if (result.success) {
-          setIsEditModalOpen(false);
-          setItemToEdit(null);
-        }
-
-        resolve(result);
-      });
-    });
+  const handleUpdate = async (id: number, data: Partial<T>): Promise<SaveResult> => {
+    try {
+      await mutations.update.mutateAsync({ id, data });
+      setIsEditModalOpen(false);
+      setItemToEdit(null);
+      return { success: true };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao atualizar';
+      return { success: false, error: errorMessage };
+    }
   };
 
   const handleDelete = (item: T) => {
@@ -83,12 +79,13 @@ export function CrudContent<T extends { id: number; name: string }>({
   const handleConfirmDelete = async () => {
     if (!itemToDelete) return;
 
-    startTransition(async () => {        
-      await actions.delete(itemToDelete.id);
-      
+    try {
+      await mutations.delete.mutateAsync(itemToDelete.id);
       setIsDeleteModalOpen(false);
       setItemToDelete(null);
-    });
+    } catch (error) {
+      console.error('Error deleting:', error);
+    }
   };
 
   const handleCancelDelete = () => {
@@ -99,6 +96,8 @@ export function CrudContent<T extends { id: number; name: string }>({
   const handleModalClose = () => {
     setIsAddModalOpen(false);
   };
+
+  const isPending = mutations.create.isPending || mutations.update.isPending || mutations.delete.isPending;
 
   return (
     <>
