@@ -1,11 +1,11 @@
 import React from 'react';
-import { Service } from '@/types';
+import { Service, ServiceData, SaveResult } from '@/types';
 import { ServiceFormModal } from '@/components/services/ServiceFormModal';
 
 interface EditServiceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (id: number, service: Partial<Service>) => Promise<{ success: boolean; error?: string }>;
+  onSave: (id: number, service: ServiceData) => Promise<SaveResult>;
   service: Service | null;
 }
 
@@ -15,11 +15,10 @@ export const EditServiceModal: React.FC<EditServiceModalProps> = ({
   onSave,
   service,
 }) => {
-  const handleSave = async (data: any) => {
-    if (data.id) {
-      return onSave(data.id, data.data);
-    }
-    return { success: false, error: 'No ID provided' };
+  const handleSave = async (data: ServiceData): Promise<SaveResult> => {
+    if (!service) return { success: false, error: 'No service provided' };
+
+    return onSave(service.id, data);
   };
 
   return (

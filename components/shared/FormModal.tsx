@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { useToast } from '@/contexts/ToastContext';
-import { FormHook } from '@/types';
+import { FormHook, SaveResult } from '@/types';
 
 interface FormModalConfig {
   addTitle: string;
@@ -17,7 +17,7 @@ interface FormModalConfig {
 interface FormModalProps<T extends { id: number }, D> {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: any) => Promise<{ success: boolean; error?: string }>;
+  onSave: (data: Omit<T, 'id'>) => Promise<SaveResult>;
   entity?: T | null;
   mode: 'add' | 'edit';
   useFormHook: (options: { initialData: T | null | undefined }) => FormHook<T, D>;
@@ -55,14 +55,7 @@ export function FormModal<T extends { id: number }, D>({
 
     try {
       setLoading(true);
-      let result;
-
-      if (mode === 'add') {
-        result = await onSave(toEntityData());
-      } else {
-        if (!entity) return;
-        result = await onSave({ id: entity.id, data: toEntityData() });
-      }
+      const result = await onSave(toEntityData());
 
       if (result.success) {
         showSuccess(

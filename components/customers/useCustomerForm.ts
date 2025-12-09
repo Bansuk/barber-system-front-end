@@ -1,68 +1,60 @@
-import { useState, useEffect } from 'react';
-import { Customer, CustomerFormData } from '@/types';
+import { useState } from 'react';
+import { Customer, CustomerFormData, FormHook } from '@/types';
 
-interface UseCustomerFormProps {
-  initialData?: Customer | null;
-  onSuccess?: () => void;
-}
+const createInitialFormData = (initialData?: Customer | null): CustomerFormData => ({
+  name: initialData?.name ?? '',
+  email: initialData?.email ?? '',
+  phone: initialData?.phoneNumber ?? '',
+});
 
-export const useCustomerForm = ({ initialData, onSuccess }: UseCustomerFormProps = {}) => {
-  const [formData, setFormData] = useState<CustomerFormData>({
-    name: '',
-    email: '',
-    phone: '',
-  });
+export const useCustomerForm: (options: {
+  initialData: Customer | null | undefined;
+}) => FormHook<Customer, CustomerFormData> = ({ initialData }) =>{
+  const [formData, setFormData] = useState<CustomerFormData>(() =>
+    createInitialFormData(initialData)
+  );
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  useEffect(() => {
-    if (initialData) {
-      setFormData({
-        name: initialData.name,
-        email: initialData.email,
-        phone: initialData.phoneNumber,
-      });
-    } else {
-      setFormData({ name: '', email: '', phone: '' });
-    }
-  }, [initialData]);
-
-  const handleChange = (field: keyof CustomerFormData | React.ChangeEvent<HTMLInputElement>, value?: any) => {
-    // Support both direct field updates and event-based updates
+  const handleChange: FormHook<Customer, CustomerFormData>['handleChange'] = (
+    field,
+    value
+  ) => {
     if (typeof field === 'string') {
-      // Direct field update (field, value)
-      setFormData((prev) => ({ ...prev, [field]: value }));
-      if (errors[field]) {
-        setErrors((prev) => ({ ...prev, [field]: '' }));
-      }
-    } else {
-      // Event-based update
-      const event = field as React.ChangeEvent<HTMLInputElement>;
-      const { name, value: eventValue } = event.target;
-      setFormData((prev) => ({ ...prev, [name]: eventValue }));
-      if (errors[name]) {
-        setErrors((prev) => ({ ...prev, [name]: '' }));
-      }
+      const name = field;
+      const nextValue = (value ?? '') as string;
+
+      setFormData(prev => ({
+        ...prev,
+        [name]: nextValue,
+      }));
+
+      if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+
+      return;
     }
+
+    const event = field;
+    const { name, value: eventValue } = event.target;
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: eventValue,
+    }));
+
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
     const emailRegex = /^(?!.*\.\.)([a-zA-Z0-9._%+-])+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Full name is required';
-    }
+    if (!formData.name.trim()) newErrors.name = 'Full name is required';
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email address is required';
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
+    if (!formData.email.trim()) newErrors.email = 'Email address is required';
+    else if (!emailRegex.test(formData.email)) newErrors.email = 'Please enter a valid email address';
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-    }
+    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;

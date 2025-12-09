@@ -1,11 +1,11 @@
 import React from 'react';
-import { Service } from '@/types';
+import { ServiceData, SaveResult } from '@/types';
 import { ServiceFormModal } from './ServiceFormModal';
 
 interface AddServiceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (service: Omit<Service, 'id'>) => Promise<{ success: boolean; error?: string }>;
+  onSave: (data: ServiceData) => Promise<SaveResult>;
 }
 
 export const AddServiceModal: React.FC<AddServiceModalProps> = ({

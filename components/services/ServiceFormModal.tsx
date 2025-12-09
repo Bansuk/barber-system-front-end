@@ -1,26 +1,34 @@
 import React from 'react';
 import { ServiceForm } from './ServiceForm';
 import { useServiceForm } from './useServiceForm';
-import { Service, ServiceFormData } from '@/types';
+import { Service, ServiceData, ServiceFormData, SaveResult } from '@/types';
 import { FormModal } from '@/components/shared/FormModal';
 
 interface ServiceFormModalProps {
   isOpen: boolean;
-  onClose: () => void;
-  onSave: (data: any) => Promise<{ success: boolean; error?: string }>;
-  service?: Service | null;
   mode: 'add' | 'edit';
+  onClose: () => void;
+  onSave: (data: ServiceData) => Promise<SaveResult>;
+  service?: Service | null;
 }
 
 const serviceFormConfig = {
-  addTitle: 'Adicionar Novo Serviço',
-  editTitle: 'Editar Serviço',
-  addSuccessMessage: 'Serviço adicionado com sucesso!',
-  editSuccessMessage: 'Serviço atualizado com sucesso!',
   addErrorMessage: 'Falha ao salvar serviço. Tente novamente.',
+  addSuccessMessage: 'Serviço adicionado com sucesso!',
+  addTitle: 'Adicionar Novo Serviço',
   editErrorMessage: 'Falha ao atualizar serviço. Tente novamente.',
+  editSuccessMessage: 'Serviço atualizado com sucesso!',
+  editTitle: 'Editar Serviço',
   entityName: 'service',
 };
+
+const renderServiceForm = (
+  formData: ServiceFormData,
+  errors: Record<string, string>,
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+) => (
+  <ServiceForm formData={formData} errors={errors} onChange={onChange} />
+);
 
 export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
   isOpen,
@@ -37,9 +45,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
       entity={service}
       mode={mode}
       useFormHook={useServiceForm}
-      renderForm={(formData, errors, onChange) => (
-        <ServiceForm formData={formData} errors={errors} onChange={onChange} />
-      )}
+      renderForm={renderServiceForm}
       config={serviceFormConfig}
     />
   );

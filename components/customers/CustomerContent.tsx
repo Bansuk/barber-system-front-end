@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import { AddCustomerModal } from '@/components/customers/AddCustomerModal';
+import { createCustomer, updateCustomer, deleteCustomer } from '@/app/(dashboard)/customers/actions';
+import { CrudContent } from '@/components/shared/CrudContent';
 import { Customer } from '@/types';
 import { CustomerTable } from '@/components/customers/CustomerTable';
-import { AddCustomerModal } from '@/components/customers/AddCustomerModal';
 import { EditCustomerModal } from '@/components/customers/EditCustomerModal';
-import { CrudContent } from '@/components/shared/CrudContent';
-import { createCustomer, updateCustomer, deleteCustomer } from '@/app/(dashboard)/customers/actions';
 
 interface CustomersContentProps {
   customers: Customer[];
@@ -45,7 +44,7 @@ export function CustomersContent({ customers }: CustomersContentProps) {
           customer={item}
         />
       )}
-      deleteEntityName="cliente"
+      entityName="cliente"
     />
   );
 }

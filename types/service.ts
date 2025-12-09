@@ -3,3 +3,5 @@ export interface Service {
   name: string;
   price: number;
 }
+
+export type ServiceData = Omit<Service, 'id'>;

@@ -3,14 +3,14 @@ import { Input } from '@/components/ui/Input';
 import { ServiceFormData } from '@/types';
 
 interface ServiceFormProps {
-  formData: ServiceFormData;
   errors: Record<string, string>;
+  formData: ServiceFormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const ServiceForm: React.FC<ServiceFormProps> = ({
-  formData,
   errors,
+  formData,
   onChange,
 }) => {
   return (

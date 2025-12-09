@@ -1,25 +1,24 @@
 import React from 'react';
-import { Customer } from '@/types';
+import { Customer, CustomerData, SaveResult } from '@/types';
 import { CustomerFormModal } from '@/components/customers/CustomerFormModal';
 
 interface EditCustomerModalProps {
+  customer: Customer | null;
   isOpen: boolean;
   onClose: () => void;
-  onSave: (id: number, customer: Partial<Customer>) => Promise<{ success: boolean; error?: string }>;
-  customer: Customer | null;
+  onSave: (id: number, customer: CustomerData) => Promise<SaveResult>;
 }
 
 export const EditCustomerModal: React.FC<EditCustomerModalProps> = ({
+  customer,
   isOpen,
   onClose,
   onSave,
-  customer,
 }) => {
-  const handleSave = async (data: any) => {
-    if (data.id) {
-      return onSave(data.id, data.data);
-    }
-    return { success: false, error: 'No ID provided' };
+  const handleSave = async (data: CustomerData): Promise<SaveResult> => {
+    if (!customer) return { success: false, error: 'No customer provided' };
+
+    return onSave(customer.id, data);
   };
 
   return (

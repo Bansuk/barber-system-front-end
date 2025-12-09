@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import { AddServiceModal } from '@/components/services/AddServiceModal';
+import { createService, updateService, deleteService } from '@/app/(dashboard)/services/actions';
+import { CrudContent } from '@/components/shared/CrudContent';
+import { EditServiceModal } from '@/components/services/EditServiceModal';
 import { Service } from '@/types';
 import { ServiceTable } from './ServiceTable';
-import { AddServiceModal } from '@/components/services/AddServiceModal';
-import { EditServiceModal } from '@/components/services/EditServiceModal';
-import { CrudContent } from '@/components/shared/CrudContent';
-import { createService, updateService, deleteService } from '@/app/(dashboard)/services/actions';
 
 interface ServicesContentProps {
   services: Service[];
@@ -45,7 +44,7 @@ export function ServicesContent({ services }: ServicesContentProps) {
           service={item}
         />
       )}
-      deleteEntityName="serviço"
+      entityName="serviço"
     />
   );
 }

@@ -1,16 +1,16 @@
 import React from 'react';
-import { Input } from '@/components/ui/Input';
 import { CustomerFormData } from '@/types';
+import { Input } from '@/components/ui/Input';
 
 interface CustomerFormProps {
-  formData: CustomerFormData;
   errors: Record<string, string>;
+  formData: CustomerFormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const CustomerForm: React.FC<CustomerFormProps> = ({
-  formData,
   errors,
+  formData,
   onChange,
 }) => {
   return (

@@ -1,21 +1,21 @@
 import React from 'react';
 
 interface StatCardProps {
-  title: string;
-  value: number | string;
   icon: React.ReactNode;
   iconBgColor: string;
-  valueColor?: string;
   subtitle?: React.ReactNode;
+  title: string;
+  value: number | string;
+  valueColor?: string;
 }
 
 export const StatCard: React.FC<StatCardProps> = ({
-  title,
-  value,
   icon,
   iconBgColor,
-  valueColor = 'text-blue-600',
   subtitle,
+  title,
+  value,
+  valueColor = 'text-blue-600',
 }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">

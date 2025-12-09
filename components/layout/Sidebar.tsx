@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 interface NavItem {
-  name: string;
   href: string;
   icon: React.ReactNode;
+  name: string;
 }
 
 const navItems: NavItem[] = [
@@ -60,15 +60,12 @@ export const Sidebar: React.FC = () => {
         <ul className="space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
+            const activeStyle = isActive ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             return (
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
-                    isActive
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${activeStyle}`}
                 >
                   {item.icon}
                   <span className="font-medium">{item.name}</span>

@@ -1,24 +1,24 @@
 'use client';
 
-import React, { useState, useTransition, ReactNode } from 'react';
+import { useState, useTransition, ReactNode } from 'react';
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
 import { PageHeader } from '@/components/layout/PageHeader';
 
 interface CrudActions<T> {
   create: (data: Omit<T, 'id'>) => Promise<{ success: boolean; error?: string }>;
-  update: (id: number, data: Partial<T>) => Promise<{ success: boolean; error?: string }>;
   delete: (id: number) => Promise<{ success: boolean; error?: string }>;
+  update: (id: number, data: Partial<T>) => Promise<{ success: boolean; error?: string }>;
 }
 
 interface CrudContentProps<T extends { id: number; name: string }> {
-  title: string;
-  buttonLabel: string;
-  items: T[];
   actions: CrudActions<T>;
-  renderTable: (items: T[], onEdit: (item: T) => void, onDelete: (item: T) => void) => ReactNode;
+  buttonLabel: string;
+  entityName: string;
+  items: T[];
   renderAddModal: (isOpen: boolean, onClose: () => void, onSave: (data: Omit<T, 'id'>) => Promise<{ success: boolean; error?: string }>) => ReactNode;
   renderEditModal: (isOpen: boolean, onClose: () => void, onSave: (id: number, data: Partial<T>) => Promise<{ success: boolean; error?: string }>, item: T | null) => ReactNode;
-  deleteEntityName: string;
+  renderTable: (items: T[], onEdit: (item: T) => void, onDelete: (item: T) => void) => ReactNode;
+  title: string;
 }
 
 export function CrudContent<T extends { id: number; name: string }>({
@@ -29,7 +29,7 @@ export function CrudContent<T extends { id: number; name: string }>({
   renderTable,
   renderAddModal,
   renderEditModal,
-  deleteEntityName,
+  entityName,
 }: CrudContentProps<T>) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -52,7 +52,7 @@ export function CrudContent<T extends { id: number; name: string }>({
           setIsAddModalOpen(false);
           setError(null);
         } else {
-          setError(result.error || `Failed to save ${deleteEntityName}`);
+          setError(result.error || `Failed to save ${entityName}`);
         }
         
         resolve(result);
@@ -75,7 +75,7 @@ export function CrudContent<T extends { id: number; name: string }>({
           setItemToEdit(null);
           setError(null);
         } else {
-          setError(result.error || `Failed to update ${deleteEntityName}`);
+          setError(result.error || `Failed to update ${entityName}`);
         }
         
         resolve(result);
@@ -95,7 +95,7 @@ export function CrudContent<T extends { id: number; name: string }>({
       const result = await actions.delete(itemToDelete.id);
       
       if (!result.success) {
-        setError(result.error || `Failed to delete ${deleteEntityName}`);
+        setError(result.error || `Failed to delete ${entityName}`);
       } else {
         setError(null);
       }
@@ -151,9 +151,9 @@ export function CrudContent<T extends { id: number; name: string }>({
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}
         description={`Esta ação não pode ser desfeita. 
-          Isso irá remover permanentemente o ${deleteEntityName} ${itemToDelete?.name || ''} do sistema.`}
+          Isso irá remover permanentemente o ${entityName} ${itemToDelete?.name || ''} do sistema.`}
         isLoading={isPending}
-        title={`Deletar ${deleteEntityName}`}
+        title={`Deletar ${entityName}`}
       />
     </>
   );

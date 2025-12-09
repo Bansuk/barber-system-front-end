@@ -1,59 +1,58 @@
-import { useState, useEffect } from 'react';
-import { Service, ServiceFormData } from '@/types';
+import { useState } from 'react';
+import { Service, ServiceFormData, FormHook } from '@/types';
 
-interface UseServiceFormProps {
-  initialData?: Service | null;
-  onSuccess?: () => void;
-}
+const createInitialFormData = (initialData?: Service | null): ServiceFormData => ({
+  name: initialData?.name ?? '',
+  price: initialData?.price ?? '',
+});
 
-export const useServiceForm = ({ initialData, onSuccess }: UseServiceFormProps = {}) => {
-  const [formData, setFormData] = useState<ServiceFormData>({
-    name: '',
-    price: '',
-  });
+export const useServiceForm: (options: {
+  initialData: Service | null | undefined;
+}) => FormHook<Service, ServiceFormData> = ({ initialData }) =>{
+  const [formData, setFormData] = useState<ServiceFormData>(() =>
+    createInitialFormData(initialData)
+  );
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  useEffect(() => {
-    if (initialData) {
-      setFormData({
-        name: initialData.name,
-        // Store price as cents (unformatted) for consistency with input handling
-        price: initialData.price.toString(),
-      });
-    } else {
-      setFormData({ name: '', price: '' });
-    }
-  }, [initialData]);
-
-  const handleChange = (field: keyof ServiceFormData | React.ChangeEvent<HTMLInputElement>, value?: any) => {
-    // Support both direct field updates and event-based updates
+  const handleChange: FormHook<Service, ServiceFormData>['handleChange'] = (
+    field,
+    value
+  ) => {
     if (typeof field === 'string') {
-      // Direct field update (field, value)
-      setFormData((prev) => ({ ...prev, [field]: value }));
-      if (errors[field]) {
-        setErrors((prev) => ({ ...prev, [field]: '' }));
-      }
-    } else {
-      // Event-based update
-      const event = field as React.ChangeEvent<HTMLInputElement>;
-      const { name, value: eventValue } = event.target;
-      setFormData((prev) => ({ ...prev, [name]: eventValue }));
-      if (errors[name]) {
-        setErrors((prev) => ({ ...prev, [name]: '' }));
-      }
+      const name = field;
+      const nextValue = (value ?? '') as string;
+
+      setFormData(prev => ({
+        ...prev,
+        [name]: nextValue,
+      }));
+
+      if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+
+      return;
     }
+
+    const event = field;
+    const { name, value: eventValue } = event.target;
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: eventValue,
+    }));
+
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Full name is required';
+      newErrors.name = 'Service name is required';
     }
 
     if (!formData.price.trim()) {
-      newErrors.price = 'Phone number is required';
+      newErrors.price = 'Price is required';
     }
 
     setErrors(newErrors);

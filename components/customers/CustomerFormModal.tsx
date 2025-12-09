@@ -1,24 +1,24 @@
 import React from 'react';
+import { Customer, CustomerData, CustomerFormData, SaveResult } from '@/types';
 import { CustomerForm } from '@/components/customers/CustomerForm';
-import { useCustomerForm } from '@/components/customers/useCustomerForm';
-import { Customer, CustomerFormData } from '@/types';
 import { FormModal } from '@/components/shared/FormModal';
+import { useCustomerForm } from '@/components/customers/useCustomerForm';
 
 interface CustomerFormModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (data: Omit<Customer, 'id'> | { id: number; data: Omit<Customer, 'id'> }) => Promise<{ success: boolean; error?: string }>;
   customer?: Customer | null;
+  isOpen: boolean;
   mode: 'add' | 'edit';
+  onClose: () => void;
+  onSave: (data: CustomerData) => Promise<SaveResult>;
 }
 
 const customerFormConfig = {
-  addTitle: 'Adicionar Novo Cliente',
-  editTitle: 'Editar Cliente',
-  addSuccessMessage: 'Cliente adicionado com sucesso!',
-  editSuccessMessage: 'Cliente atualizado com sucesso!',
   addErrorMessage: 'Falha ao salvar cliente. Tente novamente.',
+  addSuccessMessage: 'Cliente adicionado com sucesso!',
+  addTitle: 'Adicionar Novo Cliente',
   editErrorMessage: 'Falha ao atualizar cliente. Tente novamente.',
+  editSuccessMessage: 'Cliente atualizado com sucesso!',
+  editTitle: 'Editar Cliente',
   entityName: 'customer',
 };
 
@@ -31,14 +31,15 @@ const renderCustomerForm = (
 );
 
 export const CustomerFormModal: React.FC<CustomerFormModalProps> = ({
+  customer,
   isOpen,
+  mode,
   onClose,
   onSave,
-  customer,
-  mode,
 }) => {
   return (
     <FormModal<Customer, CustomerFormData>
+      key={customer?.id ?? 'new'}
       isOpen={isOpen}
       onClose={onClose}
       onSave={onSave}

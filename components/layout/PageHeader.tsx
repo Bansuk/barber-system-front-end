@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface PageHeaderProps {
-  title: string;
   action?: React.ReactNode;
+  title: string;
 }
 
-export const PageHeader: React.FC<PageHeaderProps> = ({ title, action }) => {
+export const PageHeader: React.FC<PageHeaderProps> = ({ action, title }) => {
   return (
     <div>
       <div className="max-w-7xl mx-auto px-6 py-8">

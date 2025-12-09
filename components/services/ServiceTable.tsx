@@ -1,7 +1,7 @@
 import React from 'react';
-import { Service, Column } from '@/types';
-import { priceMask } from '@/lib/utils/priceMask';
 import { DataTable } from '@/components/shared/DataTable';
+import { priceMask } from '@/lib/utils/priceMask';
+import { Service, Column } from '@/types';
 
 interface ServiceTableProps {
   services: Service[];

@@ -4,3 +4,5 @@ export interface Customer {
   email: string;
   phoneNumber: string;
 }
+
+export type CustomerData = Omit<Customer, 'id'>;

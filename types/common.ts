@@ -52,3 +52,5 @@ export interface ServiceFormData {
   name: string;
   price: string;
 }
+
+export type SaveResult = { success: boolean; error?: string };
