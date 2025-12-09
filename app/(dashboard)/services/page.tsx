@@ -1,11 +1,27 @@
+'use client';
+
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ServiceContent } from '@/components/services/ServiceContent';
-import { serviceService } from '@/services/serviceService';
+import { useServices } from '@/hooks/useServices';
 
-export const dynamic = 'force-dynamic';
+export default function ServiceManagementPage() {
+  const { data: services = [], isLoading, error } = useServices();
 
-export default async function ServiceManagementPage() {
-  const services = await serviceService.getAll();  
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className="text-red-500">Erro ao carregar serviços: {error.message}</div>
+      </DashboardLayout>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div>Carregando serviços...</div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>

@@ -21,7 +21,7 @@ interface FormModalProps<T extends { id: number }, D> {
   mode: 'add' | 'edit';
   onClose: () => void;
   onSave: (data: Omit<T, 'id'>) => Promise<SaveResult>;
-  renderForm: (formData: D, errors: Record<string, string>, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => ReactNode;
+  renderForm: (formData: D, errors: Record<string, string>, onChange: (field: keyof D | React.ChangeEvent<HTMLInputElement>, value?: unknown) => void) => ReactNode;
   useFormHook: (options: { initialData: T | null | undefined }) => FormHook<T, D>;
 }
 

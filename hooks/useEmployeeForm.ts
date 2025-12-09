@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
 import { Employee, EmployeeData, EmployeeFormData, FormHook, Service } from '@/types';
 import { useEntityForm } from '@/hooks/useEntityForm';
-import { serviceService } from '@/services/serviceService';
+import { useServices } from '@/hooks/useServices';
 
 const createInitialFormData = (initialData?: Employee | null): EmployeeFormData => ({
   name: initialData?.name ?? '',
@@ -39,33 +38,7 @@ const getEmptyFormData = (): EmployeeFormData => ({
 
 export const useEmployeeForm = (options: {
   initialData: Employee | null | undefined;
-}): FormHook<Employee, EmployeeFormData> & { toEmployeeData: () => EmployeeData; services: Service[] } => {
-  const [services, setServices] = useState<Service[]>([]);
-
-  useEffect(() => {
-    let isMounted = true;
-    
-    const fetchServices = async () => {
-      try {
-        const data = await serviceService.getAll();
-        if (isMounted) {
-          setServices(data);
-        }
-      } catch (error) {
-        console.error('Error fetching services:', error);
-        if (isMounted) {
-          setServices([]);
-        }
-      }
-    };
-
-    fetchServices();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
+}): FormHook<Employee, EmployeeFormData> & { toEmployeeData: () => EmployeeData } => {
   const hook = useEntityForm<Employee, EmployeeFormData>({
     initialData: options.initialData,
     createInitialFormData,
@@ -77,6 +50,5 @@ export const useEmployeeForm = (options: {
   return {
     ...hook,
     toEmployeeData: hook.toEntityData,
-    services,
   };
 };

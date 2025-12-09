@@ -3,6 +3,7 @@ import { Employee, EmployeeData, EmployeeFormData, SaveResult, Service } from '@
 import { EmployeeForm } from '@/components/employees/EmployeeForm';
 import { FormModal } from '@/components/shared/FormModal';
 import { useEmployeeForm } from '@/hooks/useEmployeeForm';
+import { useServices } from '@/hooks/useServices';
 
 interface EmployeeFormModalProps {
   employee?: Employee | null;
@@ -29,16 +30,24 @@ export const EmployeeFormModal: React.FC<EmployeeFormModalProps> = ({
   onClose,
   onSave,
 }) => {
-  const { services } = useEmployeeForm({ initialData: employee });
+  const { data: services = [], isLoading: isLoadingServices } = useServices();
 
   const renderEmployeeForm = (
     formData: EmployeeFormData,
     errors: Record<string, string>,
-    handleChange: (field: string, value: unknown) => void
+    handleChange: (field: keyof EmployeeFormData | React.ChangeEvent<HTMLInputElement>, value?: unknown) => void
   ) => {
     const handleServiceChange = (serviceIds: number[]) => {
       handleChange('serviceIds', serviceIds);
     };
+
+    if (isLoadingServices) {
+      return (
+        <div className="py-4 text-center text-gray-500">
+          Carregando serviços...
+        </div>
+      );
+    }
 
     return (
       <EmployeeForm

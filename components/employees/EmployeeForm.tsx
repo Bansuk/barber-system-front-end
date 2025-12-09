@@ -6,7 +6,7 @@ import { MultiSelect } from '@/components/ui/MultiSelect';
 interface EmployeeFormProps {
   errors: Record<string, string>;
   formData: EmployeeFormData;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (field: keyof EmployeeFormData | React.ChangeEvent<HTMLInputElement>, value?: unknown) => void;
   onServiceChange: (serviceIds: number[]) => void;
   services: Service[];
 }

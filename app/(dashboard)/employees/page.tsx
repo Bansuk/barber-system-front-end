@@ -1,11 +1,27 @@
+'use client';
+
 import { EmployeeContent } from '@/components/employees/EmployeeContent';
-import { employeeService } from '@/services/employeeService';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useEmployees } from '@/hooks/useEmployees';
 
-export const dynamic = 'force-dynamic';
+export default function EmployeeManagementPage() {
+  const { data: employees = [], isLoading, error } = useEmployees();
 
-export default async function EmployeeManagementPage() {
-  const employees = await employeeService.getAll();  
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className="text-red-500">Erro ao carregar funcionários: {error.message}</div>
+      </DashboardLayout>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div>Carregando funcionários...</div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
