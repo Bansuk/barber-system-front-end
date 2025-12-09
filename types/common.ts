@@ -48,15 +48,16 @@ export interface CustomerFormData {
   phone: string;
 }
 
-export interface ServiceFormData {
-  name: string;
-  price: string;
-}
-
 export interface EmployeeFormData {
   name: string;
   email: string;
   phone: string;
+  serviceIds: number[];
+}
+
+export interface ServiceFormData {
+  name: string;
+  price: string;
 }
 
 export type SaveResult = { success: boolean; error?: string };

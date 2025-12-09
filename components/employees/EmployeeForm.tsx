@@ -1,17 +1,22 @@
 import React from 'react';
-import { EmployeeFormData } from '@/types';
+import { EmployeeFormData, Service } from '@/types';
 import { Input } from '@/components/ui/Input';
+import { MultiSelect } from '@/components/ui/MultiSelect';
 
 interface EmployeeFormProps {
   errors: Record<string, string>;
   formData: EmployeeFormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onServiceChange: (serviceIds: number[]) => void;
+  services: Service[];
 }
 
 export const EmployeeForm: React.FC<EmployeeFormProps> = ({
   errors,
   formData,
   onChange,
+  onServiceChange,
+  services,
 }) => {
   return (
     <>
@@ -48,6 +53,16 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
         onChange={onChange}
         required
         error={errors.phone}
+      />
+
+      <MultiSelect
+        label="Serviços"
+        name="serviceIds"
+        options={services}
+        selectedIds={formData.serviceIds}
+        onChange={onServiceChange}
+        required
+        error={errors.serviceIds}
       />
     </>
   );

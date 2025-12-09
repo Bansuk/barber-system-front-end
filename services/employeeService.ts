@@ -13,6 +13,7 @@ const transformToApi = (employee: EmployeeData | Partial<Employee>): ApiEmployee
   name: employee.name,
   email: employee.email,
   phone_number: (employee as Employee).phoneNumber,
+  service_ids: (employee as Employee).serviceIds,
 });
 
 export const employeeService = {

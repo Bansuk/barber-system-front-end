@@ -3,7 +3,7 @@ export interface Employee {
   name: string;
   email: string;
   phoneNumber: string;
-  // serviceIds: number[];
+  serviceIds: number[];
 }
 
 export interface ApiEmployee {
@@ -18,7 +18,7 @@ export type ApiEmployeeData = {
   name?: string;
   email?: string;
   phone_number?: string;
-  // service_ids?: number[];
+  service_ids?: number[];
 };
 
 export type EmployeeData = Omit<Employee, 'id'>;
