@@ -1,26 +1,21 @@
-import { Service, ServiceFormData, FormHook } from '@/types';
+import { Service, ServiceData, ServiceFormData, FormHook } from '@/types';
 import { useEntityForm } from '@/hooks/useEntityForm';
 
 const createInitialFormData = (initialData?: Service | null): ServiceFormData => ({
   name: initialData?.name ?? '',
-  price: initialData?.price ?? '',
+  price: initialData?.price?.toString() ?? '',
 });
 
 const validateServiceForm = (formData: ServiceFormData): Record<string, string> => {
   const newErrors: Record<string, string> = {};
 
-  if (!formData.name.trim()) {
-    newErrors.name = 'Service name is required';
-  }
-
-  if (!formData.price.trim()) {
-    newErrors.price = 'Price is required';
-  }
+  if (!formData.name.trim()) newErrors.name = 'Service name is required';
+  if (!formData.price.trim()) newErrors.price = 'Price is required';
 
   return newErrors;
 };
 
-const transformToService = (formData: ServiceFormData): Omit<Service, 'id'> => ({
+const transformToService = (formData: ServiceFormData): ServiceData=> ({
   name: formData.name,
   price: parseInt(formData.price, 10),
 });
@@ -32,7 +27,7 @@ const getEmptyFormData = (): ServiceFormData => ({
 
 export const useServiceForm = (options: {
   initialData: Service | null | undefined;
-}): FormHook<Service, ServiceFormData> & { toServiceData: () => Omit<Service, 'id'> } => {
+}): FormHook<Service, ServiceFormData> & { toServiceData: () => ServiceData} => {
   const hook = useEntityForm<Service, ServiceFormData>({
     initialData: options.initialData,
     createInitialFormData,

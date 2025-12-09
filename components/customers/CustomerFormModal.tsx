@@ -2,7 +2,7 @@ import React from 'react';
 import { Customer, CustomerData, CustomerFormData, SaveResult } from '@/types';
 import { CustomerForm } from '@/components/customers/CustomerForm';
 import { FormModal } from '@/components/shared/FormModal';
-import { useCustomerForm } from '@/components/customers/useCustomerForm';
+import { useCustomerForm } from '@/hooks/useCustomerForm';
 
 interface CustomerFormModalProps {
   customer?: Customer | null;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ServiceForm } from './ServiceForm';
-import { useServiceForm } from './useServiceForm';
+import { useServiceForm } from '../../hooks/useServiceForm';
 import { Service, ServiceData, ServiceFormData, SaveResult } from '@/types';
 import { FormModal } from '@/components/shared/FormModal';
 

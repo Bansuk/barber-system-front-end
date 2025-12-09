@@ -1,4 +1,4 @@
-import { Customer, CustomerFormData, FormHook } from '@/types';
+import { Customer, CustomerData, CustomerFormData, FormHook } from '@/types';
 import { useEntityForm } from '@/hooks/useEntityForm';
 
 const createInitialFormData = (initialData?: Customer | null): CustomerFormData => ({
@@ -12,16 +12,14 @@ const validateCustomerForm = (formData: CustomerFormData): Record<string, string
   const emailRegex = /^(?!.*\.\.)([a-zA-Z0-9._%+-])+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
 
   if (!formData.name.trim()) newErrors.name = 'Full name is required';
-
   if (!formData.email.trim()) newErrors.email = 'Email address is required';
   else if (!emailRegex.test(formData.email)) newErrors.email = 'Please enter a valid email address';
-
   if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
 
   return newErrors;
 };
 
-const transformToCustomer = (formData: CustomerFormData): Omit<Customer, 'id'> => ({
+const transformToCustomer = (formData: CustomerFormData): CustomerData => ({
   name: formData.name,
   email: formData.email,
   phoneNumber: formData.phone,
@@ -35,7 +33,7 @@ const getEmptyFormData = (): CustomerFormData => ({
 
 export const useCustomerForm = (options: {
   initialData: Customer | null | undefined;
-}): FormHook<Customer, CustomerFormData> & { toCustomerData: () => Omit<Customer, 'id'> } => {
+}): FormHook<Customer, CustomerFormData> & { toCustomerData: () => CustomerData } => {
   const hook = useEntityForm<Customer, CustomerFormData>({
     initialData: options.initialData,
     createInitialFormData,
