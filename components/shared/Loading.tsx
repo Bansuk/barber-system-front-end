@@ -6,7 +6,6 @@ interface LoadingProps {
 
 export default function Loading({ 
   size = 'md', 
-  fullScreen = false,
   text = 'Carregando...'
 }: LoadingProps) {
   const sizeClasses = {
@@ -32,14 +31,6 @@ export default function Loading({
     </div>
   );
 
-  if (fullScreen) {
-    return (
-      <div className="fixed inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-50">
-        {spinner}
-      </div>
-    );
-  }
-
   return (
     <div className="flex items-center justify-center p-8">
       {spinner}
@@ -47,7 +38,6 @@ export default function Loading({
   );
 }
 
-// Page-level loading component
 export function PageLoading({ text = 'Carregando...' }: { text?: string }) {
-  return <Loading fullScreen text={text} />;
+  return <Loading text={text} />;
 }
