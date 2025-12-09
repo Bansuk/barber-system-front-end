@@ -8,25 +8,15 @@ import { PageLoading } from '@/components/shared/Loading';
 export default function CustomerManagementPage() {
   const { data: customers = [], isLoading, error } = useCustomers();
 
-  if (error) {
-    return (
-      <DashboardLayout>
-        <div className="text-red-500">Erro ao carregar clientes: {error.message}</div>
-      </DashboardLayout>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <DashboardLayout>
-        <PageLoading text="Carregando clientes..." />
-      </DashboardLayout>
-    );
-  }
+  const displayCustomrs = () => {
+    if (error) return <div className="text-red-500">Erro ao carregar clientes: {error.message}</div>;
+    if (isLoading) return <PageLoading text="Carregando clientes..." />;
+    return <CustomerContent customers={customers} />;
+}
 
   return (
     <DashboardLayout>
-      <CustomerContent customers={customers} />
+      {displayCustomrs()}
     </DashboardLayout>
   );
 }
