@@ -3,11 +3,17 @@ import { ApiAppointment, ApiAppointmentData, Appointment, AppointmentData } from
 
 const transformFromApi = (data: ApiAppointment): Appointment => ({
   id: data.id,
+  customerId: data.customer_id,
+  employeeId: data.employee_id,
   serviceIds: data.service_ids,
+  date: data.date,
 });
 
 const transformToApi = (appointment: AppointmentData | Partial<Appointment>): ApiAppointmentData => ({
-  service_ids: (appointment as Appointment).serviceIds,
+  customer_id: 'customerId' in appointment ? appointment.customerId : undefined,
+  employee_id: 'employeeId' in appointment ? appointment.employeeId : undefined,
+  service_ids: 'serviceIds' in appointment ? appointment.serviceIds : undefined,
+  date: 'date' in appointment ? appointment.date : undefined,
 });
 
 export const appointmentService = {

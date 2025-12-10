@@ -4,6 +4,8 @@ import { AppointmentForm } from '@/components/appointments/AppointmentForm';
 import { FormModal } from '@/components/shared/FormModal';
 import { useAppointmentForm } from '@/hooks/useAppointmentForm';
 import { useServices } from '@/hooks/useServices';
+import { useCustomers } from '@/hooks/useCustomers';
+import { useEmployees } from '@/hooks/useEmployees';
 
 interface AppointmentFormModalProps {
   appointment?: Appointment | null;
@@ -31,20 +33,34 @@ export const AppointmentFormModal: React.FC<AppointmentFormModalProps> = ({
   onSave,
 }) => {
   const { data: services = [], isLoading: isLoadingServices } = useServices();
+  const { data: customers = [], isLoading: isLoadingCustomers } = useCustomers();
+  const { data: employees = [], isLoading: isLoadingEmployees } = useEmployees();
 
   const renderAppointmentForm = (
     formData: AppointmentFormData,
     errors: Record<string, string>,
     handleChange: (field: keyof AppointmentFormData | React.ChangeEvent<HTMLInputElement>, value?: unknown) => void
   ) => {
+    const handleCustomerChange = (customerId: number) => {
+      handleChange('customerId', customerId);
+    };
+
+    const handleEmployeeChange = (employeeId: number) => {
+      handleChange('employeeId', employeeId);
+    };
+
     const handleServiceChange = (serviceIds: number[]) => {
       handleChange('serviceIds', serviceIds);
     };
 
-    if (isLoadingServices)
+    const handleDateChange = (date: string) => {
+      handleChange('date', date);
+    };
+
+    if (isLoadingServices || isLoadingCustomers || isLoadingEmployees)
       return (
         <div className='py-4 text-center text-gray-500'>
-          Carregando serviços...
+          Carregando dados...
         </div>
       );
 
@@ -52,8 +68,12 @@ export const AppointmentFormModal: React.FC<AppointmentFormModalProps> = ({
       <AppointmentForm
         formData={formData}
         errors={errors}
-        onChange={handleChange}
+        onCustomerChange={handleCustomerChange}
+        onEmployeeChange={handleEmployeeChange}
         onServiceChange={handleServiceChange}
+        onDateChange={handleDateChange}
+        customers={customers}
+        employees={employees}
         services={services}
       />
     );

@@ -6,6 +6,8 @@ import { Appointment } from '@/types';
 import { AppointmentTable } from '@/components/appointments/AppointmentTable';
 import { EditAppointmentModal } from '@/components/appointments/EditAppointmentModal';
 import { useCreateAppointment, useUpdateAppointment, useDeleteAppointment } from '@/hooks/useAppointments';
+import { useCustomers } from '@/hooks/useCustomers';
+import { useEmployees } from '@/hooks/useEmployees';
 
 interface AppointmentContentProps {
   appointments: Appointment[];
@@ -15,6 +17,8 @@ export function AppointmentContent({ appointments }: AppointmentContentProps) {
   const createMutation = useCreateAppointment();
   const updateMutation = useUpdateAppointment();
   const deleteMutation = useDeleteAppointment();
+  const { data: customers = [] } = useCustomers();
+  const { data: employees = [] } = useEmployees();
 
   return (
     <CrudContent<Appointment>
@@ -29,6 +33,8 @@ export function AppointmentContent({ appointments }: AppointmentContentProps) {
       renderTable={(items, onEdit, onDelete) => (
         <AppointmentTable
           appointments={items}
+          customers={customers}
+          employees={employees}
           onEdit={onEdit}
           onDelete={onDelete}
         />
