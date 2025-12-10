@@ -25,6 +25,10 @@ export interface FormHook<T, D> {
   toEntityData: () => Omit<T, 'id'>;
 }
 
+export interface AppointmentFormData {
+  serviceIds: number[];
+}
+
 export interface CustomerFormData {
   name: string;
   email: string;

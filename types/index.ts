@@ -1,3 +1,4 @@
+export * from './appointment';
 export * from './common';
 export * from './customer';
 export * from './dashboard';
