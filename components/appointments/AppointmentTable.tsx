@@ -1,6 +1,7 @@
 import React from 'react';
 import { Appointment, Column, Customer, Employee, Service } from '@/types';
 import { DataTable } from '@/components/shared/DataTable';
+import { priceMask } from '@/lib/utils/priceMask';
 
 interface AppointmentTableProps {
   appointments: Appointment[];
@@ -43,6 +44,14 @@ export const AppointmentTable: React.FC<AppointmentTableProps> = ({
     );
   };
 
+  const getTotalValue = (serviceIds: number[]): string => {
+    const total = serviceIds.reduce((sum, serviceId) => {
+      const service = services.find(s => s.id === serviceId);
+      return sum + (service ? service.price : 0);
+    }, 0);
+    return priceMask(total);
+  };
+
   const appointmentColumns: Column<Appointment>[] = [
     {
       key: 'customerId',
@@ -63,6 +72,11 @@ export const AppointmentTable: React.FC<AppointmentTableProps> = ({
       key: 'serviceIds',
       label: 'Serviços',
       render: (appointment) => getServiceNames(appointment.serviceIds),
+    },
+    {
+      key: 'value',
+      label: 'Valor',
+      render: (appointment) => getTotalValue(appointment.serviceIds),
     },
   ];
 
