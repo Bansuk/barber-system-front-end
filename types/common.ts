@@ -26,6 +26,9 @@ export interface FormHook<T, D> {
 }
 
 export interface AppointmentFormData {
+  customerId: number | '';
+  date: string;
+  employeeId: number | '';
   serviceIds: number[];
 }
 
