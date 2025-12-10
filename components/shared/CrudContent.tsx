@@ -12,7 +12,7 @@ interface CrudMutations<T> {
   delete: UseMutationResult<void, Error, number, unknown>;
 }
 
-interface CrudContentProps<T extends { id: number; name: string }> {
+interface CrudContentProps<T extends { id: number }> {
   mutations: CrudMutations<T>;
   buttonLabel: string;
   entityName: string;
@@ -21,9 +21,10 @@ interface CrudContentProps<T extends { id: number; name: string }> {
   renderEditModal: (isOpen: boolean, onClose: () => void, onSave: (id: number, data: Partial<T>) => Promise<SaveResult>, item: T | null) => ReactNode;
   renderTable: (items: T[], onEdit: (item: T) => void, onDelete: (item: T) => void) => ReactNode;
   title: string;
+  getItemName?: (item: T) => string;
 }
 
-export function CrudContent<T extends { id: number; name: string }>({
+export function CrudContent<T extends { id: number }>({
   mutations,
   buttonLabel,
   entityName,
@@ -32,6 +33,7 @@ export function CrudContent<T extends { id: number; name: string }>({
   renderEditModal,
   renderTable,
   title,
+  getItemName,
 }: CrudContentProps<T>) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -136,7 +138,7 @@ export function CrudContent<T extends { id: number; name: string }>({
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}
         description={`Esta ação não pode ser desfeita. 
-          Isso irá remover permanentemente o ${entityName} ${itemToDelete?.name || ''} do sistema.`}
+          Isso irá remover permanentemente o ${entityName} ${itemToDelete && getItemName ? getItemName(itemToDelete) : (itemToDelete && 'name' in itemToDelete ? (itemToDelete as any).name : '')} do sistema.`}
         isLoading={isPending}
         title={`Deletar ${entityName}`}
       />
