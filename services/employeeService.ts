@@ -17,8 +17,9 @@ const transformToApi = (employee: EmployeeData | Partial<Employee>): ApiEmployee
 });
 
 export const employeeService = {
-  getAll: async (): Promise<Employee[]> => {
-    const data = await api.get('/employees');
+  getAll: async (status?: string): Promise<Employee[]> => {
+    const params = status ? `?status=${status}` : '';
+    const data = await api.get(`/employees${params}`);
     return data.map(transformFromApi);
   },
 

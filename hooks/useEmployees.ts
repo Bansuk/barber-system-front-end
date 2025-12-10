@@ -4,13 +4,14 @@ import { Employee, EmployeeData } from '@/types';
 
 export const employeeKeys = {
   all: ['employees'] as const,
+  byStatus: (status?: string) => ['employees', { status }] as const,
   detail: (id: number) => ['employees', id] as const,
 };
 
-export const useEmployees = () => {
+export const useEmployees = (status?: string) => {
   return useQuery({
-    queryKey: employeeKeys.all,
-    queryFn: employeeService.getAll,
+    queryKey: status ? employeeKeys.byStatus(status) : employeeKeys.all,
+    queryFn: () => employeeService.getAll(status),
   });
 };
 

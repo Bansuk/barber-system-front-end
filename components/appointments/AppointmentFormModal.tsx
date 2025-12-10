@@ -32,9 +32,9 @@ export const AppointmentFormModal: React.FC<AppointmentFormModalProps> = ({
   onClose,
   onSave,
 }) => {
-  const { data: services = [], isLoading: isLoadingServices } = useServices();
+  const { data: services = [], isLoading: isLoadingServices } = useServices('available');
   const { data: customers = [], isLoading: isLoadingCustomers } = useCustomers();
-  const { data: employees = [], isLoading: isLoadingEmployees } = useEmployees();
+  const { data: employees = [], isLoading: isLoadingEmployees } = useEmployees('available');
 
   const renderAppointmentForm = (
     formData: AppointmentFormData,

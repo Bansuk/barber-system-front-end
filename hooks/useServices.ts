@@ -4,13 +4,14 @@ import { Service, ServiceData } from '@/types';
 
 export const serviceKeys = {
   all: ['services'] as const,
+  byStatus: (status?: string) => ['services', { status }] as const,
   detail: (id: number) => ['services', id] as const,
 };
 
-export const useServices = () => {
+export const useServices = (status?: string) => {
   return useQuery({
-    queryKey: serviceKeys.all,
-    queryFn: serviceService.getAll,
+    queryKey: status ? serviceKeys.byStatus(status) : serviceKeys.all,
+    queryFn: () => serviceService.getAll(status),
   });
 };
 
