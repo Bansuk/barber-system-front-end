@@ -1,19 +1,20 @@
 import React from 'react';
-import { Appointment, Column, Customer, Employee } from '@/types';
+import { Appointment, Column, Customer, Employee, Service } from '@/types';
 import { DataTable } from '@/components/shared/DataTable';
 
 interface AppointmentTableProps {
   appointments: Appointment[];
   customers: Customer[];
   employees: Employee[];
+  services: Service[];
   onEdit: (appointment: Appointment) => void;
   onDelete: (appointment: Appointment) => void;
 }
-
 export const AppointmentTable: React.FC<AppointmentTableProps> = ({
   appointments,
   customers,
   employees,
+  services,
   onEdit,
   onDelete
 }) => {
@@ -25,6 +26,21 @@ export const AppointmentTable: React.FC<AppointmentTableProps> = ({
   const getEmployeeName = (employeeId: number): string => {
     const employee = employees.find(e => e.id === employeeId);
     return employee ? employee.name : `ID: ${employeeId}`;
+  };
+
+  const getServiceNames = (serviceIds: number[]): React.ReactNode => {
+    return (
+      <div className='flex flex-col gap-1'>
+        {serviceIds.map(serviceId => {
+          const service = services.find(s => s.id === serviceId);
+          return (
+            <div key={serviceId}>
+              {service ? service.name : `ID: ${serviceId}`}
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   const appointmentColumns: Column<Appointment>[] = [
@@ -46,7 +62,7 @@ export const AppointmentTable: React.FC<AppointmentTableProps> = ({
     {
       key: 'serviceIds',
       label: 'Serviços',
-      render: (appointment) => appointment.serviceIds.join(', '),
+      render: (appointment) => getServiceNames(appointment.serviceIds),
     },
   ];
 
