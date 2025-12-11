@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input } from '@/components/ui/Input';
 import { ServiceFormData } from '@/types';
+import { serviceStatusOptions } from '@/lib/utils/statusConfig';
 import { SimpleSelect } from '@/components/ui/SimpleSelect';
 
 interface ServiceFormProps {
@@ -48,10 +49,7 @@ export const ServiceForm: React.FC<ServiceFormProps> = ({
           name='status'
           value={formData.status}
           onChange={onChange}
-          options={[
-            { value: 'available', label: 'Active' },
-            { value: 'unavailable', label: 'Inactive' },
-          ]}
+          options={serviceStatusOptions}
           error={errors.status}
         />
       )}

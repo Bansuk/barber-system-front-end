@@ -1,8 +1,10 @@
 import React from 'react';
 import { EmployeeFormData, Service } from '@/types';
+import { employeeStatusOptions } from '@/lib/utils/statusConfig';
 import { Input } from '@/components/ui/Input';
 import { MultiSelect } from '@/components/ui/MultiSelect';
 import { SimpleSelect } from '@/components/ui/SimpleSelect';
+
 
 interface EmployeeFormProps {
   errors: Record<string, string>;
@@ -64,12 +66,7 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
           name='status'
           value={formData.status}
           onChange={onChange}
-          options={[
-            { value: 'available', label: 'Active' },
-            { value: 'vacation', label: 'Vacation' },
-            { value: 'sick_leave', label: 'Sick Leave' },
-            { value: 'unavailable', label: 'Inactive' },
-          ]}
+          options={employeeStatusOptions}
           error={errors.status}
         />
       )}

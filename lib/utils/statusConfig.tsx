@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface StatusConfig {
   bg: string;
   text: string;
@@ -16,6 +14,16 @@ export const employeeStatusConfig: Record<string, StatusConfig> = {
   vacation: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Férias' },
   sick_leave: { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Licença Médica' },
 };
+
+const getSelectOptions = (statusConfig: Record<string, StatusConfig>) => {
+  return Object.entries(statusConfig).map(([value, config]) => ({
+    value,
+    label: config.label
+  }));
+};
+
+export const serviceStatusOptions = getSelectOptions(commonStatusConfig);
+export const employeeStatusOptions = getSelectOptions(employeeStatusConfig);
 
 export const renderStatusBadge = (status: string, config: Record<string, StatusConfig>) => {
   const statusStyle = config[status] || config.available;
