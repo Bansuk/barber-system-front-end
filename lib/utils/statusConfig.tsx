@@ -7,14 +7,14 @@ interface StatusConfig {
 }
 
 export const commonStatusConfig: Record<string, StatusConfig> = {
-  available: { bg: 'bg-green-100', text: 'text-green-700', label: 'Active' },
-  unavailable: { bg: 'bg-red-100', text: 'text-red-700', label: 'Inactive' },
+  available: { bg: 'bg-green-100', text: 'text-green-700', label: 'Disponível' },
+  unavailable: { bg: 'bg-red-100', text: 'text-red-700', label: 'Indisponível' },
 };
 
 export const employeeStatusConfig: Record<string, StatusConfig> = {
   ...commonStatusConfig,
-  vacation: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Vacation' },
-  sick_leave: { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Sick Leave' },
+  vacation: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Férias' },
+  sick_leave: { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Licença Médica' },
 };
 
 export const renderStatusBadge = (status: string, config: Record<string, StatusConfig>) => {

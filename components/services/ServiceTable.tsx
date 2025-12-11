@@ -29,7 +29,7 @@ const serviceColumns: Column<Service>[] = [
   },
   {
     key: 'status',
-    label: 'Status',
+    label: 'Situação',
     render: (service) => renderStatusBadge(service.status, commonStatusConfig),
   },
 ];

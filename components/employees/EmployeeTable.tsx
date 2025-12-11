@@ -34,7 +34,7 @@ const employeeColumns: Column<Employee>[] = [
   },
   {
     key: 'status',
-    label: 'Status',
+    label: 'Situação',
     render: (employee) => renderStatusBadge(employee.status, employeeStatusConfig),
   },
 ];
