@@ -2,11 +2,13 @@ import React from 'react';
 import { EmployeeFormData, Service } from '@/types';
 import { Input } from '@/components/ui/Input';
 import { MultiSelect } from '@/components/ui/MultiSelect';
+import { SimpleSelect } from '@/components/ui/SimpleSelect';
 
 interface EmployeeFormProps {
   errors: Record<string, string>;
   formData: EmployeeFormData;
-  onChange: (field: keyof EmployeeFormData | React.ChangeEvent<HTMLInputElement>, value?: unknown) => void;
+  mode?: 'add' | 'edit';
+  onChange: (field: keyof EmployeeFormData | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, value?: unknown) => void;
   onServiceChange: (serviceIds: number[]) => void;
   services: Service[];
 }
@@ -14,6 +16,7 @@ interface EmployeeFormProps {
 export const EmployeeForm: React.FC<EmployeeFormProps> = ({
   errors,
   formData,
+  mode,
   onChange,
   onServiceChange,
   services,
@@ -54,6 +57,22 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
         required
         error={errors.phone}
       />
+
+      {mode === 'edit' && (
+        <SimpleSelect
+          label='Status'
+          name='status'
+          value={formData.status}
+          onChange={onChange}
+          options={[
+            { value: 'available', label: 'Active' },
+            { value: 'vacation', label: 'Vacation' },
+            { value: 'sick_leave', label: 'Sick Leave' },
+            { value: 'unavailable', label: 'Inactive' },
+          ]}
+          error={errors.status}
+        />
+      )}
 
       <MultiSelect
         label='Serviços'

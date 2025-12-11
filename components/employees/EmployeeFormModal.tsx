@@ -35,7 +35,7 @@ export const EmployeeFormModal: React.FC<EmployeeFormModalProps> = ({
   const renderEmployeeForm = (
     formData: EmployeeFormData,
     errors: Record<string, string>,
-    handleChange: (field: keyof EmployeeFormData | React.ChangeEvent<HTMLInputElement>, value?: unknown) => void
+    handleChange: (field: keyof EmployeeFormData | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, value?: unknown) => void
   ) => {
     const handleServiceChange = (serviceIds: number[]) => {
       handleChange('serviceIds', serviceIds);
@@ -55,6 +55,7 @@ export const EmployeeFormModal: React.FC<EmployeeFormModalProps> = ({
         onChange={handleChange}
         onServiceChange={handleServiceChange}
         services={services}
+        mode={mode}
       />
     );
   };

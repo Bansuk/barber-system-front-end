@@ -4,6 +4,7 @@ import { useEntityForm } from '@/hooks/useEntityForm';
 const createInitialFormData = (initialData?: Service | null): ServiceFormData => ({
   name: initialData?.name ?? '',
   price: initialData?.price?.toString() ?? '',
+  status: initialData?.status ?? 'available',
 });
 
 const validateServiceForm = (formData: ServiceFormData): Record<string, string> => {
@@ -18,11 +19,13 @@ const validateServiceForm = (formData: ServiceFormData): Record<string, string> 
 const transformToService = (formData: ServiceFormData): ServiceData=> ({
   name: formData.name,
   price: parseInt(formData.price, 10),
+  status: formData.status,
 });
 
 const getEmptyFormData = (): ServiceFormData => ({
   name: '',
   price: '',
+  status: 'available',
 });
 
 export const useServiceForm = (options: {

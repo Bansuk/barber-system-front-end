@@ -1,16 +1,19 @@
 import React from 'react';
 import { Input } from '@/components/ui/Input';
 import { ServiceFormData } from '@/types';
+import { SimpleSelect } from '@/components/ui/SimpleSelect';
 
 interface ServiceFormProps {
   errors: Record<string, string>;
   formData: ServiceFormData;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  mode?: 'add' | 'edit';
+  onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export const ServiceForm: React.FC<ServiceFormProps> = ({
   errors,
   formData,
+  mode,
   onChange,
 }) => {
   return (
@@ -39,6 +42,19 @@ export const ServiceForm: React.FC<ServiceFormProps> = ({
         error={errors.price}
       />
 
+      {mode === 'edit' && (
+        <SimpleSelect
+          label='Status'
+          name='status'
+          value={formData.status}
+          onChange={onChange}
+          options={[
+            { value: 'available', label: 'Active' },
+            { value: 'unavailable', label: 'Inactive' },
+          ]}
+          error={errors.status}
+        />
+      )}
     </>
   );
 };

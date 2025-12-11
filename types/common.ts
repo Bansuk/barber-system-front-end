@@ -18,7 +18,7 @@ export interface FormHook<T, D> {
   loading: boolean;
   errors: Record<string, string>;
   setLoading: (loading: boolean) => void;
-  handleChange: (field: keyof D | React.ChangeEvent<HTMLInputElement>, value?: unknown) => void;
+  handleChange: (field: keyof D | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, value?: unknown) => void;
   validateForm: () => boolean;
   resetForm: () => void;
   clearErrors: () => void;
@@ -42,12 +42,14 @@ export interface EmployeeFormData {
   name: string;
   email: string;
   phone: string;
+  status: string;
   serviceIds: number[];
 }
 
 export interface ServiceFormData {
   name: string;
   price: string;
+  status: string;
 }
 
 export type SaveResult = { success: boolean; error?: string };

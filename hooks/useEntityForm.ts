@@ -12,7 +12,7 @@ export interface UseEntityFormOptions<T, D> {
 
 function isInputChangeEvent(
   value: unknown
-): value is ChangeEvent<HTMLInputElement> {
+): value is ChangeEvent<HTMLInputElement | HTMLSelectElement> {
   return (
     typeof value === 'object' &&
     value !== null &&

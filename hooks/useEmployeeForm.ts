@@ -5,6 +5,7 @@ const createInitialFormData = (initialData?: Employee | null): EmployeeFormData 
   name: initialData?.name ?? '',
   email: initialData?.email ?? '',
   phone: initialData?.phoneNumber ?? '',
+  status: initialData?.status ?? 'available',
   serviceIds: initialData?.serviceIds ?? [],
 });
 
@@ -25,6 +26,7 @@ const transformToEmployee = (formData: EmployeeFormData): EmployeeData => ({
   name: formData.name,
   email: formData.email,
   phoneNumber: formData.phone,
+  status: formData.status,
   serviceIds: formData.serviceIds,
 });
 
@@ -32,6 +34,7 @@ const getEmptyFormData = (): EmployeeFormData => ({
   name: '',
   email: '',
   phone: '',
+  status: 'available',
   serviceIds: [],
 });
 

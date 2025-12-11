@@ -25,9 +25,10 @@ const serviceFormConfig = {
 const renderServiceForm = (
   formData: ServiceFormData,
   errors: Record<string, string>,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (field: keyof ServiceFormData | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, value?: unknown) => void,
+  mode: 'add' | 'edit'
 ) => (
-  <ServiceForm formData={formData} errors={errors} onChange={onChange} />
+  <ServiceForm formData={formData} errors={errors} onChange={onChange} mode={mode} />
 );
 
 export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
@@ -46,7 +47,7 @@ export const ServiceFormModal: React.FC<ServiceFormModalProps> = ({
       entity={service}
       mode={mode}
       useFormHook={useServiceForm}
-      renderForm={renderServiceForm}
+      renderForm={(formData, errors, onChange) => renderServiceForm(formData, errors, onChange, mode)}
       config={serviceFormConfig}
     />
   );
