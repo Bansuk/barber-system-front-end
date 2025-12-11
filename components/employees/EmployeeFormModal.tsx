@@ -30,7 +30,7 @@ export const EmployeeFormModal: React.FC<EmployeeFormModalProps> = ({
   onClose,
   onSave,
 }) => {
-  const { data: services = [], isLoading: isLoadingServices } = useServices();
+  const { data: services = [], isLoading: isLoadingServices } = useServices('available');
 
   const renderEmployeeForm = (
     formData: EmployeeFormData,
