@@ -46,7 +46,15 @@ export const AppointmentFormModal: React.FC<AppointmentFormModalProps> = ({
     };
 
     const handleEmployeeChange = (employeeId: number) => {
+      const selectedEmployee = employees.find(emp => emp.id === employeeId);
+      
+      const currentServiceIds = formData.serviceIds;
+      const filteredServiceIds = selectedEmployee 
+        ? currentServiceIds.filter(serviceId => selectedEmployee.serviceIds.includes(serviceId))
+        : [];
+      
       handleChange('employeeId', employeeId);
+      if (currentServiceIds.length !== filteredServiceIds.length) handleChange('serviceIds', filteredServiceIds);
     };
 
     const handleServiceChange = (serviceIds: number[]) => {

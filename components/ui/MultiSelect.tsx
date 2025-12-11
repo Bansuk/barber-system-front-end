@@ -13,6 +13,8 @@ interface MultiSelectProps {
   onChange: (selectedIds: number[]) => void;
   required?: boolean;
   error?: string;
+  disabled?: boolean;
+  placeholder?: string;
 }
 
 export const MultiSelect: React.FC<MultiSelectProps> = ({
@@ -23,8 +25,11 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
   onChange,
   required = false,
   error,
+  disabled = false,
+  placeholder = 'Nenhum serviço disponível',
 }) => {
   const handleCheckboxChange = (id: number) => {
+    if (disabled) return;
     const newSelectedIds = selectedIds.includes(id)
       ? selectedIds.filter((selectedId) => selectedId !== id)
       : [...selectedIds, id];
@@ -37,21 +42,22 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
         {label}
         {required && <span className='text-red-500 ml-1'>*</span>}
       </label>
-      <div className='border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto bg-white'>
+      <div className={`border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto ${disabled ? 'bg-gray-100' : 'bg-white'}`}>
         {options.length === 0 ? (
-          <p className='text-gray-500 text-sm'>Nenhum serviço disponível</p>
+          <p className='text-gray-500 text-sm'>{placeholder}</p>
         ) : (
           options.map((option) => (
             <label
               key={option.id}
-              className='flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer'
+              className={`flex items-center p-2 rounded ${disabled ? 'cursor-not-allowed opacity-60' : 'hover:bg-gray-50 cursor-pointer'}`}
             >
               <input
                 type='checkbox'
                 name={name}
                 checked={selectedIds.includes(option.id)}
                 onChange={() => handleCheckboxChange(option.id)}
-                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'
+                disabled={disabled}
+                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 disabled:cursor-not-allowed'
               />
               <span className='ml-2 text-sm text-gray-700'>{option.name}</span>
             </label>

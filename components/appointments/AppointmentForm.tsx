@@ -27,6 +27,11 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
   employees,
   services,
 }) => {
+  const selectedEmployee = employees.find(emp => emp.id === formData.employeeId);
+  const availableServices = selectedEmployee 
+    ? services.filter(service => selectedEmployee.serviceIds.includes(service.id))
+    : [];
+
   return (
     <>
       <Select
@@ -63,11 +68,13 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
       <MultiSelect
         label='Serviços'
         name='serviceIds'
-        options={services}
+        options={availableServices}
         selectedIds={formData.serviceIds}
         onChange={onServiceChange}
         required
         error={errors.serviceIds}
+        disabled={!formData.employeeId}
+        placeholder={!formData.employeeId ? 'Selecione um funcionário(a) primeiro' : 'Selecione os serviços'}
       />
     </>
   );
