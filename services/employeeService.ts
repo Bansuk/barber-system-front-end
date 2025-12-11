@@ -6,6 +6,7 @@ const transformFromApi = (data: ApiEmployee): Employee => ({
   name: data.name,
   email: data.email,
   phoneNumber: data.phone_number,
+  status: data.status,
   serviceIds: data.service_ids,
 });
 
@@ -13,6 +14,7 @@ const transformToApi = (employee: EmployeeData | Partial<Employee>): ApiEmployee
   name: employee.name,
   email: employee.email,
   phone_number: (employee as Employee).phoneNumber,
+  status: (employee as Employee).status,
   service_ids: (employee as Employee).serviceIds,
 });
 

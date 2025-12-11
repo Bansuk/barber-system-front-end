@@ -2,6 +2,7 @@ import React from 'react';
 import { DataTable } from '@/components/shared/DataTable';
 import { priceMask } from '@/lib/utils/priceMask';
 import { Service, Column } from '@/types';
+import { commonStatusConfig, renderStatusBadge } from '@/lib/utils/statusConfig';
 
 interface ServiceTableProps {
   services: Service[];
@@ -25,6 +26,11 @@ const serviceColumns: Column<Service>[] = [
     key: 'price',
     label: 'Preço',
     render: (service) => priceMask(service.price),
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    render: (service) => renderStatusBadge(service.status, commonStatusConfig),
   },
 ];
 

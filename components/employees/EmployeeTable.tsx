@@ -2,6 +2,7 @@ import React from 'react';
 import { Employee, Column } from '@/types';
 import { DataTable } from '@/components/shared/DataTable';
 import { formatPhoneNumber } from '@/lib/utils/phoneMask';
+import { employeeStatusConfig, renderStatusBadge } from '@/lib/utils/statusConfig';
 
 interface EmployeeTableProps {
   employees: Employee[];
@@ -30,6 +31,11 @@ const employeeColumns: Column<Employee>[] = [
     key: 'phone',
     label: 'Telefone',
     render: (employee) => formatPhoneNumber(employee.phoneNumber),
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    render: (employee) => renderStatusBadge(employee.status, employeeStatusConfig),
   },
 ];
 
