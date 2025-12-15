@@ -17,6 +17,7 @@ const validateEmployeeForm = (formData: EmployeeFormData): Record<string, string
   if (!formData.email.trim()) newErrors.email = 'E-mail é obrigatório';
   else if (!emailRegex.test(formData.email)) newErrors.email = 'Digite um endereço de e-mail válido';
   if (!formData.phone.trim()) newErrors.phone = 'Telefone é obrigatório';
+  else if (formData.phone.length !== 11) newErrors.phone = 'Telefone deve ter 11 dígitos (DDD + 9 dígitos)';
   if (!formData.serviceIds || formData.serviceIds.length === 0) newErrors.serviceIds = 'Pelo menos um serviço deve ser selecionado';
 
   return newErrors;

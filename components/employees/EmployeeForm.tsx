@@ -58,6 +58,7 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = ({
         onChange={onChange}
         required
         error={errors.phone}
+        maxLength={15}
       />
 
       {mode === 'edit' && (

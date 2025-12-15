@@ -1,5 +1,5 @@
 export const formatPhoneNumber = (value: string): string => {
-  const onlyNumbers = value.replace(/\D/g, '');
+  const onlyNumbers = value.replace(/\D/g, '').slice(0, 11);
   
   if (onlyNumbers.length <= 2) return onlyNumbers;
   if (onlyNumbers.length <= 7) return `(${onlyNumbers.slice(0, 2)}) ${onlyNumbers.slice(2)}`;
@@ -9,5 +9,5 @@ export const formatPhoneNumber = (value: string): string => {
 };
 
 export const unformatPhoneNumber = (value: string): string => {
-  return value.replace(/\D/g, '');
+  return value.replace(/\D/g, '').slice(0, 11);
 };

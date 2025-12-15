@@ -48,6 +48,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
         onChange={onChange}
         required
         error={errors.phone}
+        maxLength={15}
       />
     </>
   );
