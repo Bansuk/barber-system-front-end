@@ -10,8 +10,8 @@ const createInitialFormData = (initialData?: Service | null): ServiceFormData =>
 const validateServiceForm = (formData: ServiceFormData): Record<string, string> => {
   const newErrors: Record<string, string> = {};
 
-  if (!formData.name.trim()) newErrors.name = 'Service name is required';
-  if (!formData.price.trim()) newErrors.price = 'Price is required';
+  if (!formData.name.trim()) newErrors.name = 'Nome do serviço é obrigatório';
+  if (!formData.price.trim()) newErrors.price = 'Preço é obrigatório';
 
   return newErrors;
 };

@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { SaveResult } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { useState, ReactNode } from 'react';
+import { translateApiError } from '@/lib/translations';
 
 interface CrudMutations<T> {
   create: UseMutationResult<T, Error, Omit<T, 'id'>, unknown>;
@@ -51,7 +52,7 @@ export function CrudContent<T extends { id: number }>({
       setIsAddModalOpen(false);
       return { success: true };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erro ao criar';
+      const errorMessage = translateApiError(error);
       return { success: false, error: errorMessage };
     }
   };
@@ -68,7 +69,7 @@ export function CrudContent<T extends { id: number }>({
       setItemToEdit(null);
       return { success: true };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erro ao atualizar';
+      const errorMessage = translateApiError(error);
       return { success: false, error: errorMessage };
     }
   };
