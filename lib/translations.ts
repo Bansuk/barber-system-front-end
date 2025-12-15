@@ -29,7 +29,7 @@ const errorTranslations: TranslationMap = {
   'Hour is outside of working hours.': 'Horário fora do expediente.',
   'Customer already has an appointment at this time.': 'Cliente já possui um agendamento neste horário.',
   'Employee already has an appointment at this time.': 'Funcionário(a) já possui um agendamento neste horário.',
-  'Selecetd date is unavailable.': 'Horário selecionado não está disponível.',
+  'Selected date is unavailable.': 'Horário selecionado não está disponível.',
   'Appointment not found.': 'Agendamento não encontrado.',
   
   'customer not found.': 'Cliente não encontrado.',
@@ -153,15 +153,15 @@ export function translateApiError(error: unknown): string {
     };
     
     if (apiError.errors?.json) {
-      if (Array.isArray(apiError.errors.json)) return translateError(apiError.errors.json[0] || 'Erro desconhecido') 
+      if (Array.isArray(apiError.errors.json)) return translateError(apiError.errors.json[0] || 'Erro desconhecido');
       else {
         const firstField = Object.keys(apiError.errors.json)[0];
         const firstError = apiError.errors.json[firstField]?.[0];
-        if (firstError)return translateError(firstError);
+        if (firstError) return translateError(firstError);
       }
     }
     
-    if (apiError.message)return translateError(apiError.message);
+    if (apiError.message) return translateError(apiError.message);
   }
   
   return 'Ocorreu um erro inesperado';
