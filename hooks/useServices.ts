@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { serviceService } from '@/services/serviceService';
 import { Service, ServiceData } from '@/types';
+import { dashboardKeys } from './useDashboard';
 
 export const serviceKeys = {
   all: ['services'] as const,
@@ -30,6 +31,7 @@ export const useCreateService = () => {
     mutationFn: (data: ServiceData) => serviceService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: serviceKeys.all });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.stats });
     },
   });
 };
@@ -43,6 +45,7 @@ export const useUpdateService = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: serviceKeys.all });
       queryClient.invalidateQueries({ queryKey: serviceKeys.detail(variables.id) });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.stats });
     },
   });
 };
@@ -54,6 +57,7 @@ export const useDeleteService = () => {
     mutationFn: (id: number) => serviceService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: serviceKeys.all });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.stats });
     },
   });
 };
