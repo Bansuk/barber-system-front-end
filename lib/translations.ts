@@ -111,11 +111,25 @@ const fieldTranslations: TranslationMap = {
   'duration': 'duração',
 };
 
+function formatCentsToReais(cents: number): string {
+  return (cents / 100).toFixed(2).replace('.', ',');
+}
+
 export function translateError(message: string): string {
   if (errorTranslations[message]) return errorTranslations[message];
   
   for (const { pattern, replacement } of patternTranslations) {
-    if (pattern.test(message)) return message.replace(pattern, replacement);
+    if (pattern.test(message)) {
+      if (pattern.source.includes('Price must be between')) {
+        const match = message.match(pattern);
+        if (match) {
+          const minCents = parseInt(match[1], 10);
+          const maxCents = parseInt(match[2], 10);
+          return `O preço deve estar entre R$ ${formatCentsToReais(minCents)} e R$ ${formatCentsToReais(maxCents)}.`;
+        }
+      }
+      return message.replace(pattern, replacement);
+    }
   }
   
   return message;
