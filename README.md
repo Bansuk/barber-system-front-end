@@ -1,38 +1,564 @@
-# Barber System 💈  
-Um sistema de gestão para barbearias, permitindo o gerenciamento eficiente de clientes, funcionários e agendamentos.
+# Barber System - Front-End 💈
 
-### Funcionalidades
-**Gestão de Funcionários**: Cadastro e listagem de profissionais.  
-**Gerenciamento de Clientes**: Registro e organização de clientes da barbearia.  
-**Controle de Serviços**: Definição e listagem dos serviços oferecidos.  
-**Agendamentos**: Marcação e visualização de horários disponíveis.  
-### Pré-requisitos (mínimos)
+Interface moderna e responsiva para o sistema completo de gestão de barbearias, desenvolvida com Next.js 16, React 19, TypeScript e TailwindCSS.
+
+## 📋 Índice
+
+- [Sobre o Projeto](#-sobre-o-projeto)
+  - [Arquitetura do Sistema](#arquitetura-do-sistema)
+  - [Arquitetura Interna (Front-End)](#arquitetura-interna-front-end)
+- [Funcionalidades](#-funcionalidades)
+- [Tecnologias Utilizadas](#️-tecnologias-utilizadas)
+- [Integração com Back-End](#-integração-com-back-end)
+  - [Comunicação entre Front-End e Back-End](#comunicação-entre-front-end-e-back-end)
+  - [Configuração da API](#configuração-da-api)
+- [Pré-requisitos](#-pré-requisitos)
+  - [Para Execução Local](#para-execução-local)
+  - [Para Execução com Docker](#para-execução-com-docker)
+- [Instalação e Configuração](#-instalação-e-configuração)
+  - [Execução Local](#execução-local)
+  - [Execução com Docker (Recomendado)](#execução-com-docker-recomendado)
+- [Uso](#-uso)
+  - [Acessando a Aplicação](#acessando-a-aplicação)
+  - [Navegação](#navegação)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Funcionalidades Detalhadas](#-funcionalidades-detalhadas)
+  - [Dashboard](#dashboard)
+  - [Gestão de Clientes](#gestão-de-clientes)
+  - [Gestão de Funcionários](#gestão-de-funcionários)
+  - [Gestão de Serviços](#gestão-de-serviços)
+  - [Gestão de Agendamentos](#gestão-de-agendamentos)
+- [Imagens do Sistema](#-imagens-do-sistema)
+- [Contato](#-contato)
+
+## 🎯 Sobre o Projeto
+
+O **Barber System Front-End** é a interface de usuário do sistema de gestão de barbearias.
+
+### Arquitetura do Sistema
+
+O sistema é composto por três módulos principais que se comunicam através de APIs REST:
+
+<img width="601" height="266" alt="Diagrama sem nome drawio" src="https://github.com/user-attachments/assets/c97c9fea-b850-41e0-8d10-dfec23dd0f84" />
+
+**Legenda:**
+- **Interface (Front-End)**: Esta aplicação - Next.js que consome a API
+- **API (Back-End)**: API Flask com toda a lógica de negócio ([barber-system-back-end](https://github.com/Bansuk/barber-system-back-end))
+- **Banco de Dados**: SQLite para persistência de dados
+- **API Externa**: NumVerify para validação de números de telefone
+
+### Arquitetura Interna (Front-End)
+
+O projeto segue uma arquitetura modular e escalável baseada em Next.js App Router:
+
 ```
-$ git --version
-v2.34.1
+app/                   # Rotas e páginas (App Router do Next.js)
+├── (dashboard)/       # Grupo de rotas do dashboard
+├── layout.tsx         # Layout raiz da aplicação
+└── globals.css        # Estilos globais
+
+components/            # Componentes React reutilizáveis
+├── appointments/      # Componentes de agendamentos
+├── customers/         # Componentes de clientes
+├── employees/         # Componentes de funcionários
+├── services/          # Componentes de serviços
+├── dashboard/         # Componentes do dashboard
+├── layout/            # Componentes de layout
+├── shared/            # Componentes compartilhados
+└── ui/                # Componentes de UI base
+
+hooks/                 # Custom Hooks React
+├── useAppointments.ts # Gerenciamento de agendamentos
+├── useCustomers.ts    # Gerenciamento de clientes
+├── useEmployees.ts    # Gerenciamento de funcionários
+├── useServices.ts     # Gerenciamento de serviços
+└── useEntityForm.ts   # Hook genérico para formulários
+
+services/              # Camada de serviços (comunicação com API)
+├── appointmentService.ts
+├── customerService.ts
+├── employeeService.ts
+├── serviceService.ts
+└── dashboardService.ts
+
+types/                 # Definições TypeScript
+├── appointment.ts
+├── customer.ts
+├── employee.ts
+├── service.ts
+└── common.ts
+
+contexts/              # React Contexts
+└── ToastContext.tsx   # Gerenciamento de notificações
+
+providers/             # React Providers
+└── QueryProvider.tsx  # React Query Provider
+
+lib/                   # Utilitários e configurações
+├── api.ts             # Configuração da API
+├── translations.ts    # Traduções e mensagens
+└── utils/             # Funções utilitárias
 ```
-### Instalação
-1. Clone o repositório:
+
+## ✨ Funcionalidades
+
+- **📊 Dashboard Interativo**: Visão geral com métricas e estatísticas em tempo real
+- **👥 Gestão de Clientes**: Interface completa para cadastro, edição e visualização de clientes
+- **💼 Gestão de Funcionários**: Controle de profissionais com serviços associados
+- **✂️ Gestão de Serviços**: Cadastro e gerenciamento de serviços oferecidos
+- **📅 Sistema de Agendamentos**: Interface intuitiva para criar e gerenciar agendamentos
+
+## 🛠️ Tecnologias Utilizadas
+
+[![Next.js](https://img.shields.io/badge/Next.js-16.0.7-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2.0-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-4-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![React Query](https://img.shields.io/badge/React_Query-5.90.12-FF4154?style=for-the-badge&logo=react-query&logoColor=white)](https://tanstack.com/query/latest)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+
+**Principais Dependências:**
+- **Next.js 16.0.7**: Framework React para produção com App Router
+- **React 19.2.0**: Biblioteca para construção de interfaces
+- **TypeScript 5**: Superset JavaScript com tipagem estática
+- **TailwindCSS 4**: Framework CSS utility-first
+- **React Query 5.90.12**: Gerenciamento de estado assíncrono e cache
+- **React Query Devtools**: Ferramentas de desenvolvimento para React Query
+
+## 🔗 Integração com Back-End
+
+### Comunicação entre Front-End e Back-End
+
+O front-end se comunica com o back-end através de uma API REST. A arquitetura segue o padrão cliente-servidor:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      FRONT-END (Next.js)                    │
+│                                                             │
+│  ┌─────────────┐    ┌──────────────┐    ┌──────────────┐    │
+│  │  Components │ -> │ Custom Hooks │ -> │   Services   │    │
+│  └─────────────┘    └──────────────┘    └──────────────┘    │
+│                                                   │         │
+└───────────────────────────────────────────────────┼─────────┘
+                                                    │
+                                         HTTP/REST (JSON)
+                                                    │
+┌───────────────────────────────────────────────────┼─────────┐
+│                       BACK-END (Flask)            │         │
+│                                                   ▼         │
+│  ┌──────────┐    ┌──────────┐    ┌────────────┐             │
+│  │  Routes  │ -> │ Business │ -> │ Repository │             │
+│  └──────────┘    └──────────┘    └────────────┘             │
+│                                          │                  │
+│                                          ▼                  │
+│                                   ┌────────────┐            │
+│                                   │  Database  │            │
+│                                   │  (SQLite)  │            │
+│                                   └────────────┘            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Fluxo de Dados:**
+1. Usuário interage com o componente
+2. Componente chama custom hook
+3. Hook utiliza React Query para gerenciar estado
+4. Função do service layer faz requisição HTTP
+5. API recebe requisição e processa
+6. Back-end retorna resposta JSON
+7. React Query atualiza cache
+8. Componente re-renderiza com novos dados
+
+### Configuração da API
+
+A URL da API é configurada através de variáveis de ambiente. O sistema suporta diferentes URLs para Server-Side Rendering (SSR) e Client-Side Rendering (CSR):
+
+**Variáveis de Ambiente:**
+- `NEXT_PUBLIC_API_URL`: URL pública da API (usada no navegador)
+- `API_URL_INTERNAL`: URL interna da API (usada no servidor, opcional)
+
+**Exemplo de configuração** (`.env.local`):
+```env
+# URL da API para o navegador
+NEXT_PUBLIC_API_URL=http://localhost:5000
+
+# URL da API para o servidor (opcional, útil com Docker)
+API_URL_INTERNAL=http://backend:5000
+```
+
+## 📋 Pré-requisitos
+
+### Para Execução Local
+
+- **Node.js**: Versão 20 ou superior
+- **npm**: Gerenciador de pacotes (incluído com Node.js)
+- **Git**: Para clonar o repositório
+- **Back-End**: API rodando em `http://localhost:5000`
+
 ```bash
- git clone https://github.com/Bansuk/barber-system-front-end.git
-```
-2. Execute a API
-- Certifique-se de que a API está rodando na porta `http://127.0.0.1:5000`
-3. Abra a aplicação
-- Abra `index.html` no seu browser
-### Como Usar
-1. Navegação: Utilize o menu de navegação superior para selecionar diferentes seções (Serviços, Clientes, Funcionários e Agendamentos).
-2. Visualização de Dados: Os dados de cada seção são exibidos em um formato de tabela.
-3. Criação de Itens: Clique no botão "Criar" abaixo de cada seção para ter acesso a um formulário de criação de um novo item.
-### Imagens
-![Sem título](https://github.com/user-attachments/assets/e053201f-24ad-4490-bdad-fe3e578ada93)
-![aaa](https://github.com/user-attachments/assets/a88076b0-5010-42a9-89dd-b156a9915c7c)
-![bbb](https://github.com/user-attachments/assets/d020604a-55d0-4ac7-90f2-e72264d6a393)
+# Verificar versões instaladas
+$ node --version
+v20.x.x
 
-### Feito Com
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-### Contato
+$ npm --version
+10.x.x
+
+$ git --version
+git version 2.x.x
+```
+
+### Para Execução com Docker
+
+- **Docker**: Versão 20.10 ou superior
+- **Docker Compose**: Versão 2.0 ou superior
+
+```bash
+# Verificar versões instaladas
+$ docker --version
+Docker version 20.10.x
+
+$ docker-compose --version
+Docker Compose version v2.x.x
+```
+
+## 🚀 Instalação e Configuração
+
+### Execução Local
+
+**1. Clone o repositório:**
+```bash
+git clone https://github.com/Bansuk/barber-system-front-end.git
+cd barber-system-front-end
+```
+
+**2. Instale as dependências:**
+```bash
+npm install
+```
+
+**3. Configure as variáveis de ambiente:**
+
+Crie um arquivo `.env.local` na raiz do projeto:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+```
+
+**4. Certifique-se de que o back-end está rodando:**
+
+O back-end deve estar rodando em `http://localhost:5000`. Se você ainda não configurou o back-end, siga as instruções em [barber-system-back-end](https://github.com/Bansuk/barber-system-back-end).
+
+**5. Inicie o servidor de desenvolvimento:**
+```bash
+npm run dev
+```
+
+**6. Acesse a aplicação:**
+
+Abra seu navegador e acesse: [http://localhost:3000](http://localhost:3000)
+
+### Execução com Docker (Recomendado)
+
+A maneira mais fácil de executar todo o sistema (front-end + back-end) é usando Docker Compose. O arquivo `docker-compose.yml` já está configurado para iniciar ambos os serviços.
+
+**1. Clone ambos os repositórios (se ainda não fez):**
+```bash
+# Clonar back-end
+git clone https://github.com/Bansuk/barber-system-back-end.git
+
+# Clonar front-end
+git clone https://github.com/Bansuk/barber-system-front-end.git
+```
+
+Certifique-se de que ambos os projetos estão no mesmo diretório:
+```
+Projects/
+├── barber-system-back-end/
+└── barber-system-front-end/
+```
+
+**2. Configure as variáveis de ambiente do back-end:**
+
+Crie um arquivo `.env` no diretório `barber-system-back-end/`:
+```env
+API_KEY=sua_chave_numverify_aqui
+URL=https://apilayer.net/api/validate
+PRETTIFY_JSON_RESPONSE=1
+```
+
+> **Nota**: Para obter uma chave API do NumVerify, consulte a [documentação do back-end](https://github.com/Bansuk/barber-system-back-end#-integração-com-numverify).
+
+**3. Inicie os containers:**
+
+A partir do diretório `barber-system-front-end`, execute:
+```bash
+docker-compose up --build
+```
+
+Ou para executar em background:
+```bash
+docker-compose up -d --build
+```
+
+**4. Aguarde a inicialização:**
+
+O Docker Compose irá:
+- Construir as imagens do back-end e front-end
+- Iniciar o container do back-end na porta `5000`
+- Iniciar o container do front-end na porta `3000`
+- Criar uma rede para comunicação entre os containers
+
+**5. Acesse a aplicação:**
+- **Front-End**: [http://localhost:3000](http://localhost:3000)
+- **Back-End API**: [http://localhost:5000](http://localhost:5000)
+- **Documentação Swagger**: [http://localhost:5000/swagger-ui](http://localhost:5000/swagger-ui)
+
+**6. Comandos úteis do Docker:**
+
+```bash
+# Ver logs dos containers
+docker-compose logs -f
+
+# Ver logs apenas do front-end
+docker-compose logs -f frontend
+
+# Ver logs apenas do back-end
+docker-compose logs -f backend
+
+# Parar os containers
+docker-compose down
+
+# Parar e remover volumes
+docker-compose down -v
+
+# Reconstruir os containers
+docker-compose up --build
+
+# Ver status dos containers
+docker-compose ps
+```
+
+## 💻 Uso
+
+### Acessando a Aplicação
+
+Após iniciar o servidor de desenvolvimento (local ou Docker), acesse:
+- **URL**: [http://localhost:3000](http://localhost:3000)
+- **Documentação da API**: [http://localhost:5000/swagger-ui](http://localhost:5000/swagger-ui)
+
+### Navegação
+
+A aplicação possui um menu de navegação lateral com as seguintes seções:
+
+1. **📊 Dashboard**: Visão geral com estatísticas e métricas
+2. **👥 Clientes**: Gerenciamento completo de clientes
+3. **💼 Funcionários**: Cadastro e controle de profissionais
+4. **✂️ Serviços**: Gerenciamento de serviços oferecidos
+5. **📅 Agendamentos**: Sistema de marcação de horários
+
+Cada seção possui:
+- **Tabela de dados**: Visualização em formato de tabela
+- **Busca**: Campo de pesquisa para filtrar resultados
+- **Botão "Adicionar"**: Abre modal para criar novo registro
+- **Ações**: Editar ou excluir cada registro
+
+## 📁 Estrutura do Projeto
+
+```
+barber-system-front-end/
+│
+├── app/                          # App Router do Next.js
+│   ├── (dashboard)/              # Grupo de rotas do dashboard
+│   │   ├── appointments/         # Página de agendamentos
+│   │   │   └── page.tsx
+│   │   ├── customers/            # Página de clientes
+│   │   │   └── page.tsx
+│   │   ├── dashboard/            # Página do dashboard
+│   │   │   └── page.tsx
+│   │   ├── employees/            # Página de funcionários
+│   │   │   └── page.tsx
+│   │   └── services/             # Página de serviços
+│   │       └── page.tsx
+│   ├── layout.tsx                # Layout raiz
+│   ├── page.tsx                  # Página inicial
+│   └── globals.css               # Estilos globais
+│
+├── components/                   # Componentes React
+│   ├── appointments/             # Componentes de agendamentos
+│   │   ├── AddAppointmentModal.tsx
+│   │   ├── AppointmentContent.tsx
+│   │   ├── AppointmentForm.tsx
+│   │   ├── AppointmentFormModal.tsx
+│   │   ├── AppointmentTable.tsx
+│   │   └── EditAppointmentModal.tsx
+│   ├── customers/                # Componentes de clientes
+│   ├── dashboard/                # Componentes do dashboard
+│   ├── employees/                # Componentes de funcionários
+│   ├── services/                 # Componentes de serviços
+│   ├── layout/                   # Componentes de layout
+│   │   ├── Header.tsx
+│   │   ├── Sidebar.tsx
+│   │   └── MainLayout.tsx
+│   ├── shared/                   # Componentes compartilhados
+│   └── ui/                       # Componentes de UI base
+│
+├── hooks/                        # Custom Hooks
+│   ├── useAppointmentForm.ts     # Hook para formulário de agendamentos
+│   ├── useAppointments.ts        # Hook para gestão de agendamentos
+│   ├── useCustomerForm.ts        # Hook para formulário de clientes
+│   ├── useCustomers.ts           # Hook para gestão de clientes
+│   ├── useDashboard.ts           # Hook para dados do dashboard
+│   ├── useEmployeeForm.ts        # Hook para formulário de funcionários
+│   ├── useEmployees.ts           # Hook para gestão de funcionários
+│   ├── useServiceForm.ts         # Hook para formulário de serviços
+│   ├── useServices.ts            # Hook para gestão de serviços
+│   └── useEntityForm.ts          # Hook genérico para formulários
+│
+├── services/                     # Camada de serviços
+│   ├── appointmentService.ts     # Serviço de agendamentos
+│   ├── customerService.ts        # Serviço de clientes
+│   ├── dashboardService.ts       # Serviço do dashboard
+│   ├── employeeService.ts        # Serviço de funcionários
+│   └── serviceService.ts         # Serviço de serviços
+│
+├── types/                        # Definições TypeScript
+│   ├── appointment.ts            # Tipos de agendamentos
+│   ├── customer.ts               # Tipos de clientes
+│   ├── employee.ts               # Tipos de funcionários
+│   ├── service.ts                # Tipos de serviços
+│   ├── dashboard.ts              # Tipos do dashboard
+│   ├── common.ts                 # Tipos comuns
+│   └── index.ts                  # Exportações centralizadas
+│
+├── contexts/                     # React Contexts
+│   └── ToastContext.tsx          # Context de notificações
+│
+├── providers/                    # React Providers
+│   └── QueryProvider.tsx         # Provider do React Query
+│
+├── lib/                          # Utilitários
+│   ├── api.ts                    # Configuração da API
+│   ├── translations.ts           # Traduções e mensagens
+│   └── utils/                    # Funções utilitárias
+│
+├── public/                       # Arquivos públicos estáticos
+│
+├── .env.local                    # Variáveis de ambiente (não versionado)
+├── .gitignore                    # Arquivos ignorados pelo Git
+├── docker-compose.yml            # Configuração Docker Compose
+├── Dockerfile                    # Dockerfile para o front-end
+├── eslint.config.mjs             # Configuração do ESLint
+├── next-env.d.ts                 # Definições de tipos do Next.js
+├── next.config.ts                # Configuração do Next.js
+├── package.json                  # Dependências do projeto
+├── package-lock.json             # Lock file do npm
+├── postcss.config.mjs            # Configuração do PostCSS
+├── README.md                     # Este arquivo
+└── tsconfig.json                 # Configuração do TypeScript
+```
+
+## 🎯 Funcionalidades Detalhadas
+
+### Dashboard
+
+O dashboard oferece uma visão geral completa do sistema:
+- **Total de Clientes**: Número total de clientes cadastrados
+- **Total de Funcionários**: Número de profissionais ativos
+- **Total de Serviços**: Quantidade de serviços oferecidos
+- **Agendamentos do Dia**: Lista de agendamentos para o dia atual
+- **Métricas em Tempo Real**: Atualização automática de estatísticas
+
+### Gestão de Clientes
+
+Interface completa para gerenciar clientes da barbearia:
+- **Listagem**: Visualize todos os clientes em formato de tabela
+- **Busca**: Filtre clientes por nome, email ou telefone
+- **Cadastro**: Formulário com validação para novos clientes
+  - Nome completo
+  - Email (validação de formato)
+  - Telefone (validação via NumVerify API)
+- **Edição**: Atualize informações de clientes existentes
+- **Exclusão**: Remova clientes do sistema (com confirmação)
+
+### Gestão de Funcionários
+
+Controle completo dos profissionais da barbearia:
+- **Listagem**: Visualize todos os funcionários
+- **Cadastro**: Adicione novos profissionais
+  - Nome completo
+  - Email
+  - Telefone
+  - Serviços que oferece (seleção múltipla)
+- **Associação de Serviços**: Vincule serviços aos funcionários
+- **Edição**: Atualize dados dos funcionários
+- **Exclusão**: Remova funcionários (com validação de agendamentos)
+
+### Gestão de Serviços
+
+Gerenciamento dos serviços oferecidos:
+- **Listagem**: Todos os serviços disponíveis
+- **Cadastro**: Adicione novos serviços
+  - Nome do serviço
+  - Descrição
+  - Preço
+  - Duração estimada
+- **Edição**: Atualize informações de serviços
+- **Exclusão**: Remova serviços (com validação)
+- **Visualização de Preços**: Formatação automática de valores
+
+### Gestão de Agendamentos
+
+Sistema completo de agendamento:
+- **Listagem**: Visualize todos os agendamentos
+- **Filtros**: Filtre por data, cliente ou funcionário
+- **Cadastro**: Crie novos agendamentos
+  - Seleção de cliente
+  - Seleção de funcionário
+  - Seleção de serviços (múltiplos)
+  - Data e hora
+  - Observações opcionais
+- **Edição**: Atualize agendamentos existentes
+- **Cancelamento**: Cancele agendamentos
+- **Status Visual**: Indicadores de status (confirmado, cancelado, concluído)
+- **Validações**: Verificação de conflitos de horários
+
+## 📸 Imagens do Sistema
+
+<!-- Adicione aqui capturas de tela da sua aplicação -->
+
+### Dashboard
+![Dashboard](https://github.com/user-attachments/assets/e053201f-24ad-4490-bdad-fe3e578ada93)
+
+### Gestão de Clientes
+![Gestão de Clientes](https://github.com/user-attachments/assets/a88076b0-5010-42a9-89dd-b156a9915c7c)
+
+### Gestão de Agendamentos
+![Gestão de Agendamentos](https://github.com/user-attachments/assets/d020604a-55d0-4ac7-90f2-e72264d6a393)
+
+<!-- 
+Adicione mais screenshots conforme necessário:
+
+### Gestão de Funcionários
+![Gestão de Funcionários](URL_DA_IMAGEM)
+
+### Gestão de Serviços
+![Gestão de Serviços](URL_DA_IMAGEM)
+
+### Modal de Criação de Agendamento
+![Modal de Agendamento](URL_DA_IMAGEM)
+
+### Interface Responsiva (Mobile)
+![Mobile View](URL_DA_IMAGEM)
+-->
+
+## 📞 Contato
+
 [![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:brunobalbuena@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bruno-balbuena-778336138/)
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Bansuk)
+
+---
+
+**Repositórios Relacionados:**
+- 🔗 [Back-End (API)](https://github.com/Bansuk/barber-system-back-end) - API REST em Flask
+- 🔗 [Front-End (Interface)](https://github.com/Bansuk/barber-system-front-end) - Este repositório
+
+Desenvolvido com ❤️ por [Bruno Balbuena](https://github.com/Bansuk)
