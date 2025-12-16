@@ -220,7 +220,7 @@ O Docker Compose irá:
 
 Após iniciar o servidor de desenvolvimento (local ou Docker), acesse:
 - **URL**: [http://localhost:3000](http://localhost:3000)
-- **Documentação da API**: [http://localhost:5000/swagger-ui](http://localhost:5000/swagger-ui)
+- **Documentação da API**: [http://localhost:5000/api/docs/swagger-ui](http://localhost:5000/api/docs/swagger-ui)
 
 ## 📁 Estrutura do Projeto
 
