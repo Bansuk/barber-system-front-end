@@ -3,9 +3,9 @@ import { Appointment, AppointmentData, AppointmentFormData, SaveResult } from '@
 import { AppointmentForm } from '@/components/appointments/AppointmentForm';
 import { FormModal } from '@/components/shared/FormModal';
 import { useAppointmentForm } from '@/hooks/useAppointmentForm';
-import { useServices } from '@/hooks/useServices';
 import { useCustomers } from '@/hooks/useCustomers';
 import { useEmployees } from '@/hooks/useEmployees';
+import { useServices } from '@/hooks/useServices';
 
 interface AppointmentFormModalProps {
   appointment?: Appointment | null;

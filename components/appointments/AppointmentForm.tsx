@@ -1,8 +1,8 @@
 import React from 'react';
 import { AppointmentFormData, Service, Customer, Employee } from '@/types';
+import { DateTimeInput } from '@/components/ui/DateTimeInput';
 import { MultiSelect } from '@/components/ui/MultiSelect';
 import { Select } from '@/components/ui/Select';
-import { DateTimeInput } from '@/components/ui/DateTimeInput';
 
 interface AppointmentFormProps {
   errors: Record<string, string>;

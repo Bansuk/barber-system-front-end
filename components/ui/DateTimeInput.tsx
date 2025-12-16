@@ -23,17 +23,13 @@ export const DateTimeInput: React.FC<DateTimeInputProps> = ({
   min,
   max,
 }) => {
-  // Convert from API format (YYYY-MM-DD HH:MM:SS) to datetime-local format (YYYY-MM-DDTHH:MM)
   const toDateTimeLocalFormat = (apiDate: string): string => {
     if (!apiDate) return '';
-    // Remove seconds and replace space with 'T'
     return apiDate.substring(0, 16).replace(' ', 'T');
   };
 
-  // Convert from datetime-local format (YYYY-MM-DDTHH:MM) to API format (YYYY-MM-DD HH:MM:SS)
   const toApiFormat = (localDate: string): string => {
     if (!localDate) return '';
-    // Replace 'T' with space and add ':00' for seconds
     return localDate.replace('T', ' ') + ':00';
   };
 

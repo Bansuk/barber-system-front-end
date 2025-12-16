@@ -3,9 +3,9 @@
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { SaveResult } from '@/types';
+import { translateApiError } from '@/lib/translations';
 import { UseMutationResult } from '@tanstack/react-query';
 import { useState, ReactNode } from 'react';
-import { translateApiError } from '@/lib/translations';
 
 interface CrudMutations<T> {
   create: UseMutationResult<T, Error, Omit<T, 'id'>, unknown>;
@@ -139,7 +139,7 @@ export function CrudContent<T extends { id: number }>({
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}
         description={`Esta ação não pode ser desfeita. 
-          Isso irá remover permanentemente o ${entityName} ${itemToDelete && getItemName ? getItemName(itemToDelete) : (itemToDelete && 'name' in itemToDelete ? (itemToDelete as any).name : '')} do sistema.`}
+          Isso irá remover permanentemente o ${entityName} ${itemToDelete && getItemName ? getItemName(itemToDelete) : (itemToDelete && 'name' in itemToDelete ? (itemToDelete).name : '')} do sistema.`}
         isLoading={isPending}
         title={`Deletar ${entityName}`}
       />

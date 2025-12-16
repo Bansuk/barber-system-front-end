@@ -48,10 +48,6 @@ docker-compose*.yml
 # Documentation
 *.md
 docs/
-GUIA-TESTES.md
-IMPLEMENTACAO-COMPLETA.md
-REFERENCIA-RAPIDA.md
-TRADUCAO-RESUMO.md
 
 # ESLint
 .eslintcache
