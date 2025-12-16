@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { appointmentService } from '@/services/appointmentService';
 import { Appointment, AppointmentData } from '@/types';
+import { dashboardKeys } from './useDashboard';
 
 export const appointmentKeys = {
   all: ['appointments'] as const,
@@ -29,6 +30,7 @@ export const useCreateAppointment = () => {
     mutationFn: (data: AppointmentData) => appointmentService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: appointmentKeys.all });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.stats });
     },
   });
 };
@@ -42,6 +44,7 @@ export const useUpdateAppointment = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: appointmentKeys.all });
       queryClient.invalidateQueries({ queryKey: appointmentKeys.detail(variables.id) });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.stats });
     },
   });
 };
@@ -53,6 +56,7 @@ export const useDeleteAppointment = () => {
     mutationFn: (id: number) => appointmentService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: appointmentKeys.all });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.stats });
     },
   });
 };
